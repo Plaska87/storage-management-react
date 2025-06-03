@@ -1,0 +1,16 @@
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+.app > * {
+  margin-bottom: 8px;
+}
+
+.app > *:last-child {
+  margin-bottom: 0;
+}

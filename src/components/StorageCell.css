@@ -1,0 +1,51 @@
+.storage-cell-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 4px; /* Increased gap to match parent */
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.storage-cell-content.drop-target-active {
+  background: rgba(46, 204, 113, 0.3) !important;
+  border: 2px solid rgba(46, 204, 113, 0.8) !important;
+  box-shadow: inset 0 0 15px rgba(46, 204, 113, 0.4),
+    0 0 20px rgba(46, 204, 113, 0.6);
+  transform: scale(1.02);
+  animation: cellDropTargetPulse 1s ease-in-out infinite;
+}
+
+.storage-cell-content.drop-target-invalid {
+  background: rgba(231, 76, 60, 0.3) !important;
+  border: 2px solid rgba(231, 76, 60, 0.8) !important;
+  box-shadow: inset 0 0 15px rgba(231, 76, 60, 0.4),
+    0 0 20px rgba(231, 76, 60, 0.6);
+  animation: cellDropInvalidShake 0.5s ease-in-out infinite;
+}
+
+@keyframes cellDropTargetPulse {
+  0%,
+  100% {
+    box-shadow: inset 0 0 15px rgba(46, 204, 113, 0.4),
+      0 0 20px rgba(46, 204, 113, 0.6);
+  }
+  50% {
+    box-shadow: inset 0 0 20px rgba(46, 204, 113, 0.6),
+      0 0 30px rgba(46, 204, 113, 0.8);
+  }
+}
+
+@keyframes cellDropInvalidShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}

@@ -1,0 +1,249 @@
+/* Global Styles - Dark Theme */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+  color: #e0e6ed;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(26, 26, 46, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 181, 246, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 181, 246, 0.8);
+}
+
+/* Button Base Styles */
+.btn {
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(10px);
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: rgba(52, 152, 219, 0.8);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: rgba(41, 128, 185, 1);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(149, 165, 166, 0.8);
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(127, 140, 141, 1);
+  box-shadow: 0 4px 12px rgba(149, 165, 166, 0.4);
+}
+
+.btn-danger {
+  background: rgba(231, 76, 60, 0.8);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(192, 57, 43, 1);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.btn-success {
+  background: rgba(39, 174, 96, 0.8);
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: rgba(34, 153, 84, 1);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
+.btn-warning {
+  background: rgba(243, 156, 18, 0.8);
+  color: white;
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: rgba(230, 126, 34, 1);
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
+}
+
+/* Input Styles */
+.input {
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  background: rgba(26, 26, 46, 0.8);
+  color: #e0e6ed;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  width: 100%;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #64b5f6;
+  box-shadow: 0 0 12px rgba(100, 181, 246, 0.4);
+  background: rgba(26, 26, 46, 0.9);
+}
+
+.input::placeholder {
+  color: #b0bec5;
+}
+
+/* Card Styles */
+.card {
+  background: rgba(30, 39, 73, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Utility Classes */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-2 {
+  gap: 8px;
+}
+
+.gap-4 {
+  gap: 16px;
+}
+
+.mb-2 {
+  margin-bottom: 8px;
+}
+
+.mb-4 {
+  margin-bottom: 16px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.text-sm {
+  font-size: 12px;
+}
+
+.text-lg {
+  font-size: 18px;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.select-none {
+  user-select: none;
+}
