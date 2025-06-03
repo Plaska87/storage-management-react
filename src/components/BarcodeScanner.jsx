@@ -1,92 +1,135 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Camera, X, Scan } from 'lucide-react';
-import './BarcodeScanner.css';
+import React, { useRef, useEffect, useState } from "react";
+import { Camera, X, Scan } from "lucide-react";
+import { BrowserMultiFormatReader, NotFoundException } from "@zxing/library";
+import "./BarcodeScanner.css";
 
 function BarcodeScanner({ isOpen, onClose, onScan }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const codeReaderRef = useRef(null);
   const [stream, setStream] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isScanning, setIsScanning] = useState(false);
-  const [detectedCode, setDetectedCode] = useState('');
+  const [detectedCode, setDetectedCode] = useState("");
+  const [continuousScanning, setContinuousScanning] = useState(false);
+  const scanningIntervalRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
       startCamera();
+      initializeCodeReader();
     } else {
       stopCamera();
+      stopCodeReader();
     }
 
     return () => {
       stopCamera();
+      stopCodeReader();
     };
   }, [isOpen]);
 
+  const initializeCodeReader = () => {
+    if (!codeReaderRef.current) {
+      codeReaderRef.current = new BrowserMultiFormatReader();
+    }
+  };
+
+  const stopCodeReader = () => {
+    if (codeReaderRef.current) {
+      codeReaderRef.current.reset();
+    }
+    stopContinuousScanning();
+  };
+
+  const startContinuousScanning = () => {
+    if (scanningIntervalRef.current) return; // Already scanning
+
+    setContinuousScanning(true);
+    scanningIntervalRef.current = setInterval(() => {
+      if (!detectedCode && !isScanning) {
+        scanForBarcode();
+      }
+    }, 1000); // Scan every second
+  };
+
+  const stopContinuousScanning = () => {
+    if (scanningIntervalRef.current) {
+      clearInterval(scanningIntervalRef.current);
+      scanningIntervalRef.current = null;
+    }
+    setContinuousScanning(false);
+  };
+
   const startCamera = async () => {
     try {
-      setError('');
+      setError("");
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: 'environment', // Use back camera on mobile
+          facingMode: "environment", // Use back camera on mobile
           width: { ideal: 1280 },
-          height: { ideal: 720 }
-        }
+          height: { ideal: 720 },
+        },
       });
-      
+
       setStream(mediaStream);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err) {
-      console.error('Error accessing camera:', err);
-      setError('Unable to access camera. Please ensure camera permissions are granted.');
+      console.error("Error accessing camera:", err);
+      setError(
+        "Unable to access camera. Please ensure camera permissions are granted."
+      );
     }
   };
 
   const stopCamera = () => {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
   };
 
-  // Simple barcode detection using canvas and basic pattern recognition
-  const scanForBarcode = () => {
-    if (!videoRef.current || !canvasRef.current) return;
+  // Real barcode detection using ZXing library
+  const scanForBarcode = async () => {
+    if (!videoRef.current || !codeReaderRef.current) return;
 
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    try {
+      setIsScanning(true);
+      setError("");
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    // Get image data for processing
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    
-    // Simple barcode detection (this is a basic implementation)
-    // In a real app, you'd use a proper barcode library
-    const detectedText = detectBarcodePattern(imageData);
-    
-    if (detectedText) {
-      setDetectedCode(detectedText);
+      // Use ZXing to decode barcode from video stream
+      const result = await codeReaderRef.current.decodeOnceFromVideoDevice(
+        undefined,
+        videoRef.current
+      );
+
+      if (result) {
+        setDetectedCode(result.getText());
+        setIsScanning(false);
+        console.log(
+          "Barcode detected:",
+          result.getText(),
+          "Format:",
+          result.getBarcodeFormat()
+        );
+      }
+    } catch (err) {
       setIsScanning(false);
+      if (err instanceof NotFoundException) {
+        // No barcode found, this is normal - just continue scanning
+        console.log("No barcode found, continuing...");
+      } else {
+        console.error("Error scanning barcode:", err);
+        setError("Error scanning barcode. Please try again.");
+      }
     }
-  };
-
-  // Basic barcode pattern detection (simplified)
-  const detectBarcodePattern = (imageData) => {
-    // This is a very simplified barcode detection
-    // In reality, you'd need a proper barcode decoding library
-    // For demo purposes, we'll simulate detection after a few seconds
-    return null;
   };
 
   const handleManualInput = () => {
     // Allow manual input as fallback
-    const code = prompt('Enter barcode manually:');
+    const code = prompt("Enter barcode manually:");
     if (code && code.trim()) {
       onScan(code.trim());
       onClose();
@@ -94,14 +137,7 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
   };
 
   const handleScanClick = () => {
-    setIsScanning(true);
-    // Simulate barcode detection after 2 seconds for demo
-    setTimeout(() => {
-      // In a real implementation, this would be actual barcode detection
-      const mockBarcode = 'DEMO-' + Date.now().toString().slice(-6);
-      setDetectedCode(mockBarcode);
-      setIsScanning(false);
-    }, 2000);
+    scanForBarcode();
   };
 
   const handleUseCode = () => {
@@ -112,7 +148,7 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
   };
 
   const handleClose = () => {
-    setDetectedCode('');
+    setDetectedCode("");
     setIsScanning(false);
     onClose();
   };
@@ -147,8 +183,8 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
                   muted
                   className="camera-video"
                 />
-                <canvas ref={canvasRef} style={{ display: 'none' }} />
-                
+                <canvas ref={canvasRef} style={{ display: "none" }} />
+
                 <div className="scan-overlay">
                   <div className="scan-frame">
                     <div className="corner top-left"></div>
@@ -158,10 +194,14 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
                   </div>
                 </div>
 
-                {isScanning && (
+                {(isScanning || continuousScanning) && (
                   <div className="scanning-indicator">
                     <div className="scan-line"></div>
-                    <p>Scanning...</p>
+                    <p>
+                      {continuousScanning
+                        ? "Auto-scanning for Code128..."
+                        : "Scanning..."}
+                    </p>
                   </div>
                 )}
               </div>
@@ -169,14 +209,30 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
               <div className="scanner-controls">
                 {!detectedCode ? (
                   <>
-                    <button 
-                      className="scan-btn" 
+                    <button
+                      className="scan-btn"
                       onClick={handleScanClick}
                       disabled={isScanning}
                     >
                       <Scan size={20} />
-                      {isScanning ? 'Scanning...' : 'Scan Barcode'}
+                      {isScanning ? "Scanning..." : "Scan Once"}
                     </button>
+
+                    <button
+                      className={continuousScanning ? "scan-btn" : "manual-btn"}
+                      onClick={
+                        continuousScanning
+                          ? stopContinuousScanning
+                          : startContinuousScanning
+                      }
+                      disabled={isScanning}
+                    >
+                      <Camera size={20} />
+                      {continuousScanning
+                        ? "Stop Auto-Scan"
+                        : "Start Auto-Scan"}
+                    </button>
+
                     <button className="manual-btn" onClick={handleManualInput}>
                       Enter Manually
                     </button>
@@ -189,7 +245,10 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
                       <button className="use-code-btn" onClick={handleUseCode}>
                         Use This Code
                       </button>
-                      <button className="scan-again-btn" onClick={() => setDetectedCode('')}>
+                      <button
+                        className="scan-again-btn"
+                        onClick={() => setDetectedCode("")}
+                      >
                         Scan Again
                       </button>
                     </div>
