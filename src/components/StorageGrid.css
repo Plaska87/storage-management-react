@@ -26,10 +26,10 @@
   /* Add light blue background for column gaps */
   background: linear-gradient(
       to right,
-      transparent 80px,
-      rgba(100, 181, 246, 0.3) 80px,
-      rgba(100, 181, 246, 0.3) 92px,
-      transparent 92px
+      transparent 88px,
+      rgba(100, 181, 246, 0.3) 88px,
+      rgba(100, 181, 246, 0.3) 100px,
+      transparent 100px
     ),
     rgba(15, 52, 96, 0.2);
   background-size: 212px 100%, 100% 100%;
@@ -78,17 +78,17 @@
   /* Colored backgrounds for visual separation */
   background: linear-gradient(
       to right,
-      transparent 80px,
-      rgba(100, 181, 246, 0.4) 80px,
-      rgba(100, 181, 246, 0.4) 92px,
-      transparent 92px
+      transparent 88px,
+      rgba(100, 181, 246, 0.4) 88px,
+      rgba(100, 181, 246, 0.4) 100px,
+      transparent 100px
     ),
     linear-gradient(
       to bottom,
-      transparent 80px,
-      rgba(255, 165, 0, 0.4) 80px,
-      rgba(255, 165, 0, 0.4) 96px,
-      transparent 96px
+      transparent 88px,
+      rgba(255, 165, 0, 0.4) 88px,
+      rgba(255, 165, 0, 0.4) 104px,
+      transparent 104px
     ),
     rgba(15, 52, 96, 0.05);
   background-size: 212px 100%, 100% 96px, 100% 100%;
@@ -183,10 +183,10 @@
   .grid-header {
     background: linear-gradient(
         to right,
-        transparent 70px,
-        rgba(100, 181, 246, 0.3) 70px,
-        rgba(100, 181, 246, 0.3) 82px,
-        transparent 82px
+        transparent 78px,
+        rgba(100, 181, 246, 0.3) 78px,
+        rgba(100, 181, 246, 0.3) 90px,
+        transparent 90px
       ),
       rgba(15, 52, 96, 0.2);
     background-size: 192px 100%, 100% 100%;
@@ -196,17 +196,17 @@
   .storage-grid {
     background: linear-gradient(
         to right,
-        transparent 70px,
-        rgba(100, 181, 246, 0.4) 70px,
-        rgba(100, 181, 246, 0.4) 82px,
-        transparent 82px
+        transparent 78px,
+        rgba(100, 181, 246, 0.4) 78px,
+        rgba(100, 181, 246, 0.4) 90px,
+        transparent 90px
       ),
       linear-gradient(
         to bottom,
-        transparent 70px,
-        rgba(255, 165, 0, 0.4) 70px,
-        rgba(255, 165, 0, 0.4) 86px,
-        transparent 86px
+        transparent 78px,
+        rgba(255, 165, 0, 0.4) 78px,
+        rgba(255, 165, 0, 0.4) 94px,
+        transparent 94px
       ),
       rgba(15, 52, 96, 0.05);
     background-size: 192px 100%, 100% 86px, 100% 100%;
@@ -238,10 +238,10 @@
   .grid-header {
     background: linear-gradient(
         to right,
-        transparent 60px,
-        rgba(100, 181, 246, 0.3) 60px,
-        rgba(100, 181, 246, 0.3) 72px,
-        transparent 72px
+        transparent 68px,
+        rgba(100, 181, 246, 0.3) 68px,
+        rgba(100, 181, 246, 0.3) 80px,
+        transparent 80px
       ),
       rgba(15, 52, 96, 0.2);
     background-size: 172px 100%, 100% 100%;
@@ -251,17 +251,17 @@
   .storage-grid {
     background: linear-gradient(
         to right,
-        transparent 60px,
-        rgba(100, 181, 246, 0.4) 60px,
-        rgba(100, 181, 246, 0.4) 72px,
-        transparent 72px
+        transparent 68px,
+        rgba(100, 181, 246, 0.4) 68px,
+        rgba(100, 181, 246, 0.4) 80px,
+        transparent 80px
       ),
       linear-gradient(
         to bottom,
-        transparent 60px,
-        rgba(255, 165, 0, 0.4) 60px,
-        rgba(255, 165, 0, 0.4) 76px,
-        transparent 76px
+        transparent 68px,
+        rgba(255, 165, 0, 0.4) 68px,
+        rgba(255, 165, 0, 0.4) 84px,
+        transparent 84px
       ),
       rgba(15, 52, 96, 0.05);
     background-size: 172px 100%, 100% 76px, 100% 100%;
@@ -303,10 +303,10 @@
   .grid-header {
     background: linear-gradient(
         to right,
-        transparent 50px,
-        rgba(100, 181, 246, 0.3) 50px,
-        rgba(100, 181, 246, 0.3) 62px,
-        transparent 62px
+        transparent 58px,
+        rgba(100, 181, 246, 0.3) 58px,
+        rgba(100, 181, 246, 0.3) 70px,
+        transparent 70px
       ),
       rgba(15, 52, 96, 0.2);
     background-size: 152px 100%, 100% 100%;
@@ -316,17 +316,17 @@
   .storage-grid {
     background: linear-gradient(
         to right,
-        transparent 50px,
-        rgba(100, 181, 246, 0.4) 50px,
-        rgba(100, 181, 246, 0.4) 62px,
-        transparent 62px
+        transparent 58px,
+        rgba(100, 181, 246, 0.4) 58px,
+        rgba(100, 181, 246, 0.4) 70px,
+        transparent 70px
       ),
       linear-gradient(
         to bottom,
-        transparent 50px,
-        rgba(255, 165, 0, 0.4) 50px,
-        rgba(255, 165, 0, 0.4) 66px,
-        transparent 66px
+        transparent 58px,
+        rgba(255, 165, 0, 0.4) 58px,
+        rgba(255, 165, 0, 0.4) 74px,
+        transparent 74px
       ),
       rgba(15, 52, 96, 0.05);
     background-size: 152px 100%, 100% 66px, 100% 100%;
