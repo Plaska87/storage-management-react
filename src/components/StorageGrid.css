@@ -85,10 +85,11 @@
     ),
     linear-gradient(
       to bottom,
-      transparent 88px,
-      rgba(255, 165, 0, 0.4) 88px,
-      rgba(255, 165, 0, 0.4) 104px,
-      transparent 104px
+      transparent 0px,
+      transparent 80px,
+      rgba(255, 165, 0, 0.4) 80px,
+      rgba(255, 165, 0, 0.4) 96px,
+      transparent 96px
     ),
     rgba(15, 52, 96, 0.05);
   background-size: 212px 100%, 100% 96px, 100% 100%;
@@ -203,10 +204,11 @@
       ),
       linear-gradient(
         to bottom,
-        transparent 78px,
-        rgba(255, 165, 0, 0.4) 78px,
-        rgba(255, 165, 0, 0.4) 94px,
-        transparent 94px
+        transparent 0px,
+        transparent 70px,
+        rgba(255, 165, 0, 0.4) 70px,
+        rgba(255, 165, 0, 0.4) 86px,
+        transparent 86px
       ),
       rgba(15, 52, 96, 0.05);
     background-size: 192px 100%, 100% 86px, 100% 100%;
@@ -258,10 +260,11 @@
       ),
       linear-gradient(
         to bottom,
-        transparent 68px,
-        rgba(255, 165, 0, 0.4) 68px,
-        rgba(255, 165, 0, 0.4) 84px,
-        transparent 84px
+        transparent 0px,
+        transparent 60px,
+        rgba(255, 165, 0, 0.4) 60px,
+        rgba(255, 165, 0, 0.4) 76px,
+        transparent 76px
       ),
       rgba(15, 52, 96, 0.05);
     background-size: 172px 100%, 100% 76px, 100% 100%;
@@ -323,10 +326,11 @@
       ),
       linear-gradient(
         to bottom,
-        transparent 58px,
-        rgba(255, 165, 0, 0.4) 58px,
-        rgba(255, 165, 0, 0.4) 74px,
-        transparent 74px
+        transparent 0px,
+        transparent 50px,
+        rgba(255, 165, 0, 0.4) 50px,
+        rgba(255, 165, 0, 0.4) 66px,
+        transparent 66px
       ),
       rgba(15, 52, 96, 0.05);
     background-size: 152px 100%, 100% 66px, 100% 100%;
