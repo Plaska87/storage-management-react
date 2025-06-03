@@ -83,17 +83,9 @@
       rgba(100, 181, 246, 0.4) 100px,
       transparent 100px
     ),
-    linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 80px,
-      rgba(255, 165, 0, 0.4) 80px,
-      rgba(255, 165, 0, 0.4) 96px,
-      transparent 96px
-    ),
     rgba(15, 52, 96, 0.05);
-  background-size: 212px 100%, 100% 96px, 100% 100%;
-  background-repeat: repeat-x, repeat-y, no-repeat;
+  background-size: 212px 100%, 100% 100%;
+  background-repeat: repeat-x, no-repeat;
   position: relative;
 }
 
@@ -202,17 +194,9 @@
         rgba(100, 181, 246, 0.4) 90px,
         transparent 90px
       ),
-      linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 70px,
-        rgba(255, 165, 0, 0.4) 70px,
-        rgba(255, 165, 0, 0.4) 86px,
-        transparent 86px
-      ),
       rgba(15, 52, 96, 0.05);
-    background-size: 192px 100%, 100% 86px, 100% 100%;
-    background-repeat: repeat-x, repeat-y, no-repeat;
+    background-size: 192px 100%, 100% 100%;
+    background-repeat: repeat-x, no-repeat;
   }
 
   .col-header {
@@ -258,17 +242,9 @@
         rgba(100, 181, 246, 0.4) 80px,
         transparent 80px
       ),
-      linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 60px,
-        rgba(255, 165, 0, 0.4) 60px,
-        rgba(255, 165, 0, 0.4) 76px,
-        transparent 76px
-      ),
       rgba(15, 52, 96, 0.05);
-    background-size: 172px 100%, 100% 76px, 100% 100%;
-    background-repeat: repeat-x, repeat-y, no-repeat;
+    background-size: 172px 100%, 100% 100%;
+    background-repeat: repeat-x, no-repeat;
   }
 
   .col-header {
@@ -324,17 +300,9 @@
         rgba(100, 181, 246, 0.4) 70px,
         transparent 70px
       ),
-      linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 50px,
-        rgba(255, 165, 0, 0.4) 50px,
-        rgba(255, 165, 0, 0.4) 66px,
-        transparent 66px
-      ),
       rgba(15, 52, 96, 0.05);
-    background-size: 152px 100%, 100% 66px, 100% 100%;
-    background-repeat: repeat-x, repeat-y, no-repeat;
+    background-size: 152px 100%, 100% 100%;
+    background-repeat: repeat-x, no-repeat;
   }
 
   .col-header {
