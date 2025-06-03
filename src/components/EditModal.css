@@ -112,6 +112,42 @@
   font-size: 14px;
 }
 
+.input-with-scan {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input-with-scan .input {
+  flex: 1;
+}
+
+.scan-btn {
+  background: linear-gradient(135deg, #64b5f6, #42a5f5);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  box-shadow: 0 2px 4px rgba(100, 181, 246, 0.2);
+}
+
+.scan-btn:hover {
+  background: linear-gradient(135deg, #42a5f5, #2196f3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.3);
+}
+
+.scan-btn:active {
+  transform: translateY(0);
+}
+
 .modal-footer {
   padding: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -146,23 +182,34 @@
     width: 95%;
     margin: 20px;
   }
-  
+
   .modal-header,
   .modal-body,
   .modal-footer {
     padding: 16px;
   }
-  
+
   .modal-title h2 {
     font-size: 1.1em;
   }
-  
+
   .modal-footer {
     flex-direction: column;
   }
-  
+
   .modal-footer .btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .input-with-scan {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .scan-btn {
+    width: 100%;
+    height: 48px;
+    margin-top: 8px;
   }
 }

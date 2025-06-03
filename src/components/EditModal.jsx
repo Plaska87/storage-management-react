@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { X, Save, Trash2, Package } from "lucide-react";
+import { X, Save, Trash2, Package, Scan } from "lucide-react";
 import { useStorage } from "../context/StorageContext";
+import BarcodeScanner from "./BarcodeScanner";
 import "./EditModal.css";
 
 function EditModal() {
   const { state, actions } = useStorage();
   const [materialInput, setMaterialInput] = useState("");
+  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
 
   const isOpen = state.editingPallet !== null;
   const currentMaterial = state.editingPallet
@@ -65,6 +67,16 @@ function EditModal() {
     }
   };
 
+  const handleBarcodeScanned = (scannedCode) => {
+    setMaterialInput(scannedCode);
+    setShowBarcodeScanner(false);
+    actions.showToast("Barcode scanned successfully!", "success");
+  };
+
+  const handleOpenBarcodeScanner = () => {
+    setShowBarcodeScanner(true);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -98,17 +110,27 @@ function EditModal() {
 
           <div className="input-group">
             <label htmlFor="materialInput">Material:</label>
-            <input
-              id="materialInput"
-              type="text"
-              className="input"
-              placeholder="Enter material name..."
-              value={materialInput}
-              onChange={(e) => setMaterialInput(e.target.value)}
-              onKeyDown={handleKeyPress}
-              maxLength={50}
-              autoFocus
-            />
+            <div className="input-with-scan">
+              <input
+                id="materialInput"
+                type="text"
+                className="input"
+                placeholder="Enter material name..."
+                value={materialInput}
+                onChange={(e) => setMaterialInput(e.target.value)}
+                onKeyDown={handleKeyPress}
+                maxLength={50}
+                autoFocus
+              />
+              <button
+                type="button"
+                className="scan-btn"
+                onClick={handleOpenBarcodeScanner}
+                title="Scan barcode"
+              >
+                <Scan size={16} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -141,6 +163,13 @@ function EditModal() {
           </button>
         </div>
       </div>
+
+      {/* Barcode Scanner */}
+      <BarcodeScanner
+        isOpen={showBarcodeScanner}
+        onClose={() => setShowBarcodeScanner(false)}
+        onScan={handleBarcodeScanned}
+      />
     </div>
   );
 }
