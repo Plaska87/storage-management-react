@@ -12,6 +12,7 @@ function StorageGrid() {
   // Generate grid cells
   const renderGrid = () => {
     const cells = [];
+    let pathwayAdded = false;
 
     for (let row = 0; row < STORAGE_CONFIG.ROWS; row++) {
       // Add row header
@@ -28,17 +29,30 @@ function StorageGrid() {
           col === STORAGE_CONFIG.FORKLIFT_PATHWAY.col &&
           row >= STORAGE_CONFIG.FORKLIFT_PATHWAY.startRow
         ) {
-          cells.push(
-            <div key={`pathway-${row}-${col}`} className="storage-cell pathway">
-              <div className="pathway-content">
-                🚛
-                <br />
-                FORKLIFT
-                <br />
-                PATHWAY
+          // Only add the pathway block once (on the first pathway row)
+          if (!pathwayAdded) {
+            const pathwayRows =
+              STORAGE_CONFIG.ROWS - STORAGE_CONFIG.FORKLIFT_PATHWAY.startRow;
+            cells.push(
+              <div
+                key={`pathway-merged`}
+                className="storage-cell pathway pathway-merged"
+                style={{
+                  gridRow: `span ${pathwayRows}`,
+                }}
+              >
+                <div className="pathway-content">
+                  🚛
+                  <br />
+                  FORKLIFT
+                  <br />
+                  PATHWAY
+                </div>
               </div>
-            </div>
-          );
+            );
+            pathwayAdded = true;
+          }
+          // Skip adding individual pathway cells for subsequent rows
         } else {
           cells.push(
             <StorageCell key={`cell-${row}-${col}`} row={row} col={col} />
