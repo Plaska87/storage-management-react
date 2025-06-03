@@ -85,14 +85,34 @@
     ),
     linear-gradient(
       to bottom,
-      transparent 88px,
-      rgba(255, 165, 0, 0.4) 88px,
-      rgba(255, 165, 0, 0.4) 104px,
-      transparent 104px
+      transparent 96px,
+      rgba(255, 165, 0, 0.4) 96px,
+      rgba(255, 165, 0, 0.4) 112px,
+      transparent 112px
     ),
     rgba(15, 52, 96, 0.05);
-  background-size: 212px 100%, 100% 96px, 100% 100%;
+  background-size: 212px 100%, 100% 112px, 100% 100%;
   background-repeat: repeat-x, repeat-y, no-repeat;
+  /* Mask to exclude pathway area (column 5, rows 3-5) */
+  mask:
+    /* Exclude column separators in pathway column */ linear-gradient(
+      to right,
+      white 0px,
+      white 1160px,
+      transparent 1160px,
+      transparent 1172px,
+      white 1172px
+    ),
+    /* Exclude row separators in pathway rows */
+      linear-gradient(
+        to bottom,
+        white 0px,
+        white 296px,
+        transparent 296px,
+        transparent 584px,
+        white 584px
+      );
+  mask-composite: intersect;
   position: relative;
 }
 
@@ -203,14 +223,34 @@
       ),
       linear-gradient(
         to bottom,
-        transparent 78px,
-        rgba(255, 165, 0, 0.4) 78px,
-        rgba(255, 165, 0, 0.4) 94px,
-        transparent 94px
+        transparent 86px,
+        rgba(255, 165, 0, 0.4) 86px,
+        rgba(255, 165, 0, 0.4) 102px,
+        transparent 102px
       ),
       rgba(15, 52, 96, 0.05);
-    background-size: 192px 100%, 100% 86px, 100% 100%;
+    background-size: 192px 100%, 100% 102px, 100% 100%;
     background-repeat: repeat-x, repeat-y, no-repeat;
+    /* Mask to exclude pathway area (column 5, rows 3-5) */
+    mask:
+      /* Exclude column separators in pathway column */ linear-gradient(
+        to right,
+        white 0px,
+        white 1038px,
+        transparent 1038px,
+        transparent 1050px,
+        white 1050px
+      ),
+      /* Exclude row separators in pathway rows */
+        linear-gradient(
+          to bottom,
+          white 0px,
+          white 266px,
+          transparent 266px,
+          transparent 524px,
+          white 524px
+        );
+    mask-composite: intersect;
   }
 
   .col-header {
@@ -258,14 +298,34 @@
       ),
       linear-gradient(
         to bottom,
-        transparent 68px,
-        rgba(255, 165, 0, 0.4) 68px,
-        rgba(255, 165, 0, 0.4) 84px,
-        transparent 84px
+        transparent 76px,
+        rgba(255, 165, 0, 0.4) 76px,
+        rgba(255, 165, 0, 0.4) 92px,
+        transparent 92px
       ),
       rgba(15, 52, 96, 0.05);
-    background-size: 172px 100%, 100% 76px, 100% 100%;
+    background-size: 172px 100%, 100% 92px, 100% 100%;
     background-repeat: repeat-x, repeat-y, no-repeat;
+    /* Mask to exclude pathway area (column 5, rows 3-5) */
+    mask:
+      /* Exclude column separators in pathway column */ linear-gradient(
+        to right,
+        white 0px,
+        white 928px,
+        transparent 928px,
+        transparent 940px,
+        white 940px
+      ),
+      /* Exclude row separators in pathway rows */
+        linear-gradient(
+          to bottom,
+          white 0px,
+          white 236px,
+          transparent 236px,
+          transparent 464px,
+          white 464px
+        );
+    mask-composite: intersect;
   }
 
   .col-header {
@@ -323,14 +383,34 @@
       ),
       linear-gradient(
         to bottom,
-        transparent 58px,
-        rgba(255, 165, 0, 0.4) 58px,
-        rgba(255, 165, 0, 0.4) 74px,
-        transparent 74px
+        transparent 66px,
+        rgba(255, 165, 0, 0.4) 66px,
+        rgba(255, 165, 0, 0.4) 82px,
+        transparent 82px
       ),
       rgba(15, 52, 96, 0.05);
-    background-size: 152px 100%, 100% 66px, 100% 100%;
+    background-size: 152px 100%, 100% 82px, 100% 100%;
     background-repeat: repeat-x, repeat-y, no-repeat;
+    /* Mask to exclude pathway area (column 5, rows 3-5) */
+    mask:
+      /* Exclude column separators in pathway column */ linear-gradient(
+        to right,
+        white 0px,
+        white 818px,
+        transparent 818px,
+        transparent 830px,
+        white 830px
+      ),
+      /* Exclude row separators in pathway rows */
+        linear-gradient(
+          to bottom,
+          white 0px,
+          white 206px,
+          transparent 206px,
+          transparent 404px,
+          white 404px
+        );
+    mask-composite: intersect;
   }
 
   .col-header {
