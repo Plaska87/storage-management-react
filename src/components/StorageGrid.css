@@ -12,8 +12,9 @@
 .grid-header {
   display: grid;
   grid-template-columns: 80px repeat(13, 200px); /* Fixed width for better visibility */
-  gap: 8px; /* Increased gap for better separation */
-  margin-bottom: 12px;
+  column-gap: 12px; /* Light blue column separation */
+  row-gap: 8px;
+  margin-bottom: 16px;
   flex-shrink: 0;
   min-width: max-content;
   padding: 8px;
@@ -22,6 +23,14 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  /* Add light blue background for column gaps */
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0px,
+    transparent 200px,
+    rgba(100, 181, 246, 0.3) 200px,
+    rgba(100, 181, 246, 0.3) 212px
+  );
 }
 
 .corner-header {
@@ -40,6 +49,9 @@
   border-radius: 8px;
   font-size: 16px;
   border: 2px solid rgba(100, 181, 246, 0.5);
+  /* Light blue borders for column separation */
+  border-left: 3px solid rgba(100, 181, 246, 0.6);
+  border-right: 3px solid rgba(100, 181, 246, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,7 +69,8 @@
 .storage-grid {
   display: grid;
   grid-template-columns: 80px repeat(13, 200px); /* Fixed width columns for consistency */
-  gap: 8px; /* Increased gap for better visual separation */
+  column-gap: 8px; /* Light blue column separation */
+  row-gap: 12px; /* Orange row separation */
   flex: 1;
   overflow: visible; /* Let parent handle scrolling */
   min-width: max-content;
@@ -77,6 +90,9 @@
   justify-content: center;
   font-size: 14px;
   border: 2px solid rgba(100, 181, 246, 0.5);
+  /* Orange borders for row separation */
+  border-top: 3px solid rgba(255, 165, 0, 0.6);
+  border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   min-height: 80px; /* Increased height for better proportion */
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -101,11 +117,20 @@
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Colored borders for visual separation */
+  border-left: 3px solid rgba(100, 181, 246, 0.6); /* Light blue for column separation */
+  border-right: 3px solid rgba(100, 181, 246, 0.6);
+  border-top: 3px solid rgba(255, 165, 0, 0.6); /* Orange for row separation */
+  border-bottom: 3px solid rgba(255, 165, 0, 0.6);
 }
 
 .storage-cell:hover {
-  border-color: rgba(100, 181, 246, 0.4);
   background: rgba(15, 52, 96, 0.8);
+  /* Maintain colored borders on hover */
+  border-left: 3px solid rgba(100, 181, 246, 0.8);
+  border-right: 3px solid rgba(100, 181, 246, 0.8);
+  border-top: 3px solid rgba(255, 165, 0, 0.8);
+  border-bottom: 3px solid rgba(255, 165, 0, 0.8);
 }
 
 .storage-cell.pathway {
@@ -115,6 +140,11 @@
     rgba(243, 156, 18, 0.8)
   );
   border-color: rgba(230, 126, 34, 0.8);
+  /* Maintain colored borders for pathway */
+  border-left: 3px solid rgba(100, 181, 246, 0.6);
+  border-right: 3px solid rgba(100, 181, 246, 0.6);
+  border-top: 3px solid rgba(255, 165, 0, 0.6);
+  border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,15 +170,26 @@
     width: 180px;
     font-size: 14px;
     padding: 10px;
+    /* Maintain colored borders */
+    border-left: 3px solid rgba(100, 181, 246, 0.6);
+    border-right: 3px solid rgba(100, 181, 246, 0.6);
   }
 
   .row-header {
     font-size: 12px;
     min-height: 70px;
+    /* Maintain colored borders */
+    border-top: 3px solid rgba(255, 165, 0, 0.6);
+    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .storage-cell {
     min-height: 70px;
+    /* Maintain colored borders */
+    border-left: 3px solid rgba(100, 181, 246, 0.6);
+    border-right: 3px solid rgba(100, 181, 246, 0.6);
+    border-top: 3px solid rgba(255, 165, 0, 0.6);
+    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 }
 
@@ -162,17 +203,28 @@
     width: 160px;
     font-size: 12px;
     padding: 8px;
+    /* Maintain colored borders */
+    border-left: 3px solid rgba(100, 181, 246, 0.6);
+    border-right: 3px solid rgba(100, 181, 246, 0.6);
   }
 
   .row-header {
     font-size: 11px;
     min-height: 60px;
+    /* Maintain colored borders */
+    border-top: 3px solid rgba(255, 165, 0, 0.6);
+    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .storage-cell {
     min-height: 60px;
     padding: 4px;
     gap: 3px;
+    /* Maintain colored borders */
+    border-left: 3px solid rgba(100, 181, 246, 0.6);
+    border-right: 3px solid rgba(100, 181, 246, 0.6);
+    border-top: 3px solid rgba(255, 165, 0, 0.6);
+    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .pathway-content {
@@ -190,17 +242,28 @@
     width: 140px;
     font-size: 11px;
     padding: 6px;
+    /* Maintain colored borders */
+    border-left: 3px solid rgba(100, 181, 246, 0.6);
+    border-right: 3px solid rgba(100, 181, 246, 0.6);
   }
 
   .row-header {
     font-size: 10px;
     min-height: 50px;
+    /* Maintain colored borders */
+    border-top: 3px solid rgba(255, 165, 0, 0.6);
+    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .storage-cell {
     min-height: 50px;
     padding: 3px;
     gap: 2px;
+    /* Maintain colored borders */
+    border-left: 3px solid rgba(100, 181, 246, 0.6);
+    border-right: 3px solid rgba(100, 181, 246, 0.6);
+    border-top: 3px solid rgba(255, 165, 0, 0.6);
+    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .pathway-content {
