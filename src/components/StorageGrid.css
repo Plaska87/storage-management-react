@@ -49,9 +49,6 @@
   border-radius: 8px;
   font-size: 16px;
   border: 2px solid rgba(100, 181, 246, 0.5);
-  /* Light blue borders for column separation */
-  border-left: 3px solid rgba(100, 181, 246, 0.6);
-  border-right: 3px solid rgba(100, 181, 246, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,13 +66,69 @@
 .storage-grid {
   display: grid;
   grid-template-columns: 80px repeat(13, 200px); /* Fixed width columns for consistency */
-  column-gap: 8px; /* Light blue column separation */
-  row-gap: 12px; /* Orange row separation */
+  column-gap: 12px; /* Light blue column separation */
+  row-gap: 16px; /* Orange row separation */
   flex: 1;
   overflow: visible; /* Let parent handle scrolling */
   min-width: max-content;
   padding: 8px;
+  /* Colored backgrounds for visual separation */
   background: rgba(15, 52, 96, 0.05);
+  position: relative;
+}
+
+/* Light blue column separators */
+.storage-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0px,
+    transparent 80px,
+    rgba(100, 181, 246, 0.4) 80px,
+    rgba(100, 181, 246, 0.4) 92px,
+    transparent 92px,
+    transparent 292px,
+    rgba(100, 181, 246, 0.4) 292px,
+    rgba(100, 181, 246, 0.4) 304px,
+    transparent 304px,
+    transparent 504px,
+    rgba(100, 181, 246, 0.4) 504px,
+    rgba(100, 181, 246, 0.4) 516px,
+    transparent 516px,
+    transparent 716px,
+    rgba(100, 181, 246, 0.4) 716px,
+    rgba(100, 181, 246, 0.4) 728px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Orange row separators */
+.storage-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 80px,
+    rgba(255, 165, 0, 0.4) 80px,
+    rgba(255, 165, 0, 0.4) 96px,
+    transparent 96px,
+    transparent 176px,
+    rgba(255, 165, 0, 0.4) 176px,
+    rgba(255, 165, 0, 0.4) 192px
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .row-header {
@@ -90,14 +143,13 @@
   justify-content: center;
   font-size: 14px;
   border: 2px solid rgba(100, 181, 246, 0.5);
-  /* Orange borders for row separation */
-  border-top: 3px solid rgba(255, 165, 0, 0.6);
-  border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   min-height: 80px; /* Increased height for better proportion */
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1; /* Ensure headers appear above colored separators */
 }
 
 .row-header:hover {
@@ -117,20 +169,13 @@
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Colored borders for visual separation */
-  border-left: 3px solid rgba(100, 181, 246, 0.6); /* Light blue for column separation */
-  border-right: 3px solid rgba(100, 181, 246, 0.6);
-  border-top: 3px solid rgba(255, 165, 0, 0.6); /* Orange for row separation */
-  border-bottom: 3px solid rgba(255, 165, 0, 0.6);
+  position: relative;
+  z-index: 1; /* Ensure cells appear above colored separators */
 }
 
 .storage-cell:hover {
   background: rgba(15, 52, 96, 0.8);
-  /* Maintain colored borders on hover */
-  border-left: 3px solid rgba(100, 181, 246, 0.8);
-  border-right: 3px solid rgba(100, 181, 246, 0.8);
-  border-top: 3px solid rgba(255, 165, 0, 0.8);
-  border-bottom: 3px solid rgba(255, 165, 0, 0.8);
+  border-color: rgba(100, 181, 246, 0.4);
 }
 
 .storage-cell.pathway {
@@ -140,11 +185,6 @@
     rgba(243, 156, 18, 0.8)
   );
   border-color: rgba(230, 126, 34, 0.8);
-  /* Maintain colored borders for pathway */
-  border-left: 3px solid rgba(100, 181, 246, 0.6);
-  border-right: 3px solid rgba(100, 181, 246, 0.6);
-  border-top: 3px solid rgba(255, 165, 0, 0.6);
-  border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -170,26 +210,15 @@
     width: 180px;
     font-size: 14px;
     padding: 10px;
-    /* Maintain colored borders */
-    border-left: 3px solid rgba(100, 181, 246, 0.6);
-    border-right: 3px solid rgba(100, 181, 246, 0.6);
   }
 
   .row-header {
     font-size: 12px;
     min-height: 70px;
-    /* Maintain colored borders */
-    border-top: 3px solid rgba(255, 165, 0, 0.6);
-    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .storage-cell {
     min-height: 70px;
-    /* Maintain colored borders */
-    border-left: 3px solid rgba(100, 181, 246, 0.6);
-    border-right: 3px solid rgba(100, 181, 246, 0.6);
-    border-top: 3px solid rgba(255, 165, 0, 0.6);
-    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 }
 
@@ -203,28 +232,17 @@
     width: 160px;
     font-size: 12px;
     padding: 8px;
-    /* Maintain colored borders */
-    border-left: 3px solid rgba(100, 181, 246, 0.6);
-    border-right: 3px solid rgba(100, 181, 246, 0.6);
   }
 
   .row-header {
     font-size: 11px;
     min-height: 60px;
-    /* Maintain colored borders */
-    border-top: 3px solid rgba(255, 165, 0, 0.6);
-    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .storage-cell {
     min-height: 60px;
     padding: 4px;
     gap: 3px;
-    /* Maintain colored borders */
-    border-left: 3px solid rgba(100, 181, 246, 0.6);
-    border-right: 3px solid rgba(100, 181, 246, 0.6);
-    border-top: 3px solid rgba(255, 165, 0, 0.6);
-    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .pathway-content {
@@ -242,28 +260,17 @@
     width: 140px;
     font-size: 11px;
     padding: 6px;
-    /* Maintain colored borders */
-    border-left: 3px solid rgba(100, 181, 246, 0.6);
-    border-right: 3px solid rgba(100, 181, 246, 0.6);
   }
 
   .row-header {
     font-size: 10px;
     min-height: 50px;
-    /* Maintain colored borders */
-    border-top: 3px solid rgba(255, 165, 0, 0.6);
-    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .storage-cell {
     min-height: 50px;
     padding: 3px;
     gap: 2px;
-    /* Maintain colored borders */
-    border-left: 3px solid rgba(100, 181, 246, 0.6);
-    border-right: 3px solid rgba(100, 181, 246, 0.6);
-    border-top: 3px solid rgba(255, 165, 0, 0.6);
-    border-bottom: 3px solid rgba(255, 165, 0, 0.6);
   }
 
   .pathway-content {
