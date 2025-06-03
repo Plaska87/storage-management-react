@@ -1,10 +1,10 @@
-import React from 'react'
-import { Save, FolderOpen, Trash2, Download, Factory } from 'lucide-react'
-import { useStorage } from '../context/StorageContext'
-import './Header.css'
+import React from "react";
+import { Save, FolderOpen, Trash2, Download, Factory } from "lucide-react";
+import { useStorage } from "../context/StorageContext";
+import "./Header.css";
 
 function Header() {
-  const { actions } = useStorage()
+  const { actions } = useStorage();
 
   return (
     <header className="header">
@@ -12,9 +12,9 @@ function Header() {
         <Factory size={24} />
         <h1>Storage Management System</h1>
       </div>
-      
+
       <div className="header-controls">
-        <button 
+        <button
           className="btn btn-primary"
           onClick={actions.saveData}
           title="Save Data"
@@ -22,8 +22,8 @@ function Header() {
           <Save size={16} />
           Save Data
         </button>
-        
-        <button 
+
+        <button
           className="btn btn-secondary"
           onClick={actions.loadData}
           title="Load Data"
@@ -31,8 +31,8 @@ function Header() {
           <FolderOpen size={16} />
           Load Data
         </button>
-        
-        <button 
+
+        <button
           className="btn btn-danger"
           onClick={actions.clearAll}
           title="Clear All Data"
@@ -40,8 +40,8 @@ function Header() {
           <Trash2 size={16} />
           Clear All
         </button>
-        
-        <button 
+
+        <button
           className="btn btn-success"
           onClick={actions.exportData}
           title="Export Data"
@@ -51,7 +51,7 @@ function Header() {
         </button>
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

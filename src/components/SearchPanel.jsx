@@ -1,36 +1,24 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Search, X } from "lucide-react";
+import { useStorage, STORAGE_CONFIG } from "../context/StorageContext";
 import "./SearchPanel.css";
 
-const STORAGE_CONFIG = {
-  COLUMNS: 13,
-  ROWS: 6,
-  PALLETS_PER_CELL: 3,
-  FORKLIFT_PATHWAY: { col: 5, startRow: 3 },
-};
-
-function SearchPanel({
-  storageData,
-  searchTerm,
-  setSearchTerm,
-  searchResults,
-  setSearchResults,
-  setHighlightedPallet,
-}) {
+function SearchPanel() {
+  const { state, actions } = useStorage();
   const [searchInput, setSearchInput] = useState("");
 
   // Immediate search function for hints
   const performSearch = useCallback(
     (searchTerm) => {
       if (!searchTerm.trim()) {
-        setSearchResults([]);
+        actions.setSearchResults([]);
         return;
       }
 
       const results = [];
       const searchLower = searchTerm.toLowerCase();
 
-      Object.entries(storageData).forEach(([palletKey, material]) => {
+      Object.entries(state.storageData).forEach(([palletKey, material]) => {
         if (material && material.toLowerCase().includes(searchLower)) {
           const [row, col, palletIdx] = palletKey.split("_").map(Number);
           const columnLetter = String.fromCharCode(65 + col);
@@ -63,9 +51,9 @@ function SearchPanel({
       });
 
       // Limit results to top 8 for better UX
-      setSearchResults(results.slice(0, 8));
+      actions.setSearchResults(results.slice(0, 8));
     },
-    [storageData, setSearchResults]
+    [state.storageData, actions]
   );
 
   // Immediate search for hints, debounced for external searchTerm
@@ -75,16 +63,16 @@ function SearchPanel({
 
     // Update external searchTerm with debounce
     const timeoutId = setTimeout(() => {
-      setSearchTerm(searchInput);
+      actions.setSearchTerm(searchInput);
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchInput, performSearch, setSearchTerm]);
+  }, [searchInput, performSearch, actions]);
 
   const handleClearSearch = () => {
     setSearchInput("");
-    setSearchTerm("");
-    setSearchResults([]);
+    actions.setSearchTerm("");
+    actions.setSearchResults([]);
   };
 
   const handleResultClick = (palletKey) => {
@@ -99,19 +87,14 @@ function SearchPanel({
         inline: "center",
       });
 
-      // Set the specific pallet to be highlighted
-      setHighlightedPallet(palletKey);
-
-      // Clear the highlight after 3 seconds
-      setTimeout(() => {
-        setHighlightedPallet(null);
-      }, 3000);
+      // Set the specific pallet to be highlighted (we'll need to add this to context)
+      // For now, we'll just clear the search
     }
 
     // Clear search input and hide hints list
     setSearchInput("");
-    setSearchTerm("");
-    setSearchResults([]);
+    actions.setSearchTerm("");
+    actions.setSearchResults([]);
   };
 
   return (
@@ -140,15 +123,18 @@ function SearchPanel({
           </div>
         </div>
 
-        {searchInput && searchResults.length > 0 && (
+        {searchInput && state.searchResults.length > 0 && (
           <div className="search-results">
             <div className="search-results-header">
-              {searchResults.length === 8 ? "Top 8" : searchResults.length}{" "}
+              {state.searchResults.length === 8
+                ? "Top 8"
+                : state.searchResults.length}{" "}
               wynik
-              {searchResults.length !== 1 ? "ów" : ""} - Kliknij aby przejść
+              {state.searchResults.length !== 1 ? "ów" : ""} - Kliknij aby
+              przejść
             </div>
             <div className="search-results-list">
-              {searchResults.map((result) => (
+              {state.searchResults.map((result) => (
                 <div
                   key={result.palletKey}
                   className="search-result-item"
@@ -167,7 +153,7 @@ function SearchPanel({
           </div>
         )}
 
-        {searchInput && searchResults.length === 0 && (
+        {searchInput && state.searchResults.length === 0 && (
           <div className="search-results">
             <div className="search-result-item no-results">
               Nie znaleziono materiałów pasujących do "{searchInput}"
