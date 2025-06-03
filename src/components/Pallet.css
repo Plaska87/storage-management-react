@@ -171,20 +171,29 @@
   pointer-events: none;
 }
 
-/* Search highlight animation */
+/* Search highlight animation and persistent state */
 .pallet.search-highlight {
-  animation: searchPulse 2s ease-in-out;
+  /* Initial animation when first highlighted */
+  animation: searchPulse 3s ease-in-out;
   z-index: 5;
+  /* Persistent highlight state after animation */
+  border-color: rgba(46, 204, 113, 1) !important;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.6) !important;
+  transform: scale(1.02);
+}
+
+.pallet.search-highlight:hover {
+  /* Enhanced hover state for highlighted pallets */
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(46, 204, 113, 0.8) !important;
 }
 
 @keyframes searchPulse {
-  0%,
-  100% {
+  0% {
     transform: scale(1);
     box-shadow: 0 0 0 rgba(46, 204, 113, 0);
   }
-  25%,
-  75% {
+  25% {
     transform: scale(1.08);
     box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
     border-color: rgba(46, 204, 113, 1);
@@ -192,6 +201,17 @@
   50% {
     transform: scale(1.12);
     box-shadow: 0 0 30px rgba(46, 204, 113, 1);
+    border-color: rgba(46, 204, 113, 1);
+  }
+  75% {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
+    border-color: rgba(46, 204, 113, 1);
+  }
+  100% {
+    /* End state matches the persistent highlight */
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
     border-color: rgba(46, 204, 113, 1);
   }
 }
