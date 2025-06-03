@@ -1,39 +1,44 @@
-import React from 'react'
-import { Package, PackageCheck, PackageX, TrendingUp } from 'lucide-react'
-import { useStorage } from '../context/StorageContext'
-import { getStats } from '../context/StorageContext'
-import './StatsPanel.css'
+import React from "react";
+import { Package, PackageCheck, PackageX, TrendingUp } from "lucide-react";
+import { useStorage } from "../context/StorageContext";
+import { getStats } from "../context/StorageContext";
+import "./StatsPanel.css";
 
 function StatsPanel() {
-  const { state } = useStorage()
-  const stats = getStats(state.storageData)
+  const { state } = useStorage();
+  const stats = getStats(state.storageData);
 
   const statItems = [
     {
       icon: Package,
-      label: 'Total Pallets',
+      label: "Łączna liczba palet",
       value: stats.totalPallets,
-      color: '#64b5f6'
+      color: "#64b5f6",
     },
     {
       icon: PackageCheck,
-      label: 'Occupied',
+      label: "Zajęte",
       value: stats.occupiedCount,
-      color: '#39c96e'
+      color: "#39c96e",
     },
     {
       icon: PackageX,
-      label: 'Empty',
+      label: "Puste",
       value: stats.emptyCount,
-      color: '#b0bec5'
+      color: "#b0bec5",
     },
     {
       icon: TrendingUp,
-      label: 'Utilization',
+      label: "Wykorzystanie",
       value: `${stats.utilization}%`,
-      color: stats.utilization > 80 ? '#e74c3c' : stats.utilization > 60 ? '#f39c12' : '#39c96e'
-    }
-  ]
+      color:
+        stats.utilization > 80
+          ? "#e74c3c"
+          : stats.utilization > 60
+          ? "#f39c12"
+          : "#39c96e",
+    },
+  ];
 
   return (
     <div className="stats-panel card">
@@ -52,22 +57,22 @@ function StatsPanel() {
           </div>
         ))}
       </div>
-      
+
       <div className="utilization-bar">
-        <div className="utilization-bar-label">Storage Utilization</div>
+        <div className="utilization-bar-label">Wykorzystanie magazynu</div>
         <div className="utilization-bar-container">
-          <div 
+          <div
             className="utilization-bar-fill"
-            style={{ 
+            style={{
               width: `${stats.utilization}%`,
-              backgroundColor: statItems[3].color
+              backgroundColor: statItems[3].color,
             }}
           />
           <div className="utilization-bar-text">{stats.utilization}%</div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default StatsPanel
+export default StatsPanel;

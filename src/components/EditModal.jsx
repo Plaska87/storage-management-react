@@ -28,14 +28,14 @@ function EditModal() {
     const [row, col, palletIdx] = state.editingPallet.split("_").map(Number);
     const columnLetter = String.fromCharCode(65 + col);
 
-    return `Row ${row + 1}, Column ${columnLetter}, Pallet ${palletIdx + 1}`;
+    return `Rząd ${row + 1}, Kolumna ${columnLetter}, Paleta ${palletIdx + 1}`;
   };
 
   const handleSave = () => {
     if (state.editingPallet) {
       const trimmedMaterial = materialInput.trim();
       actions.updatePallet(state.editingPallet, trimmedMaterial);
-      actions.showToast("Changes saved successfully!", "success");
+      actions.showToast("Zmiany zostały zapisane!", "success");
       handleClose();
     }
   };
@@ -43,7 +43,7 @@ function EditModal() {
   const handleClear = () => {
     if (state.editingPallet) {
       actions.clearPallet(state.editingPallet);
-      actions.showToast("Pallet cleared!", "warning");
+      actions.showToast("Paleta została wyczyszczona!", "warning");
       handleClose();
     }
   };
@@ -70,7 +70,7 @@ function EditModal() {
   const handleBarcodeScanned = (scannedCode) => {
     setMaterialInput(scannedCode);
     setShowBarcodeScanner(false);
-    actions.showToast("Barcode scanned successfully!", "success");
+    actions.showToast("Kod kreskowy został zeskanowany!", "success");
   };
 
   const handleOpenBarcodeScanner = () => {
@@ -85,12 +85,12 @@ function EditModal() {
         <div className="modal-header">
           <div className="modal-title">
             <Package size={20} />
-            <h2>Edit Pallet Content</h2>
+            <h2>Edytuj zawartość palety</h2>
           </div>
           <button
             className="modal-close-btn"
             onClick={handleClose}
-            title="Close"
+            title="Zamknij"
           >
             <X size={20} />
           </button>
@@ -98,24 +98,24 @@ function EditModal() {
 
         <div className="modal-body">
           <div className="pallet-info">
-            <strong>Location:</strong> {getPalletInfo()}
+            <strong>Lokalizacja:</strong> {getPalletInfo()}
           </div>
 
           <div className="current-content">
-            <strong>Current Content:</strong>{" "}
+            <strong>Aktualna zawartość:</strong>{" "}
             <span className={currentMaterial ? "has-content" : "empty-content"}>
-              {currentMaterial || "Empty"}
+              {currentMaterial || "Pusta"}
             </span>
           </div>
 
           <div className="input-group">
-            <label htmlFor="materialInput">Material:</label>
+            <label htmlFor="materialInput">Materiał:</label>
             <div className="input-with-scan">
               <input
                 id="materialInput"
                 type="text"
                 className="input"
-                placeholder="Enter material name..."
+                placeholder="Wprowadź nazwę materiału..."
                 value={materialInput}
                 onChange={(e) => setMaterialInput(e.target.value)}
                 onKeyDown={handleKeyPress}
@@ -126,7 +126,7 @@ function EditModal() {
                 type="button"
                 className="scan-btn"
                 onClick={handleOpenBarcodeScanner}
-                title="Scan barcode"
+                title="Skanuj kod kreskowy"
               >
                 <Scan size={16} />
               </button>
@@ -138,28 +138,28 @@ function EditModal() {
           <button
             className="btn btn-primary"
             onClick={handleSave}
-            title="Save changes"
+            title="Zapisz zmiany"
           >
             <Save size={16} />
-            Save
+            Zapisz
           </button>
 
           <button
             className="btn btn-warning"
             onClick={handleClear}
-            title="Clear pallet"
+            title="Wyczyść paletę"
           >
             <Trash2 size={16} />
-            Clear
+            Wyczyść
           </button>
 
           <button
             className="btn btn-secondary"
             onClick={handleClose}
-            title="Cancel"
+            title="Anuluj"
           >
             <X size={16} />
-            Cancel
+            Anuluj
           </button>
         </div>
       </div>

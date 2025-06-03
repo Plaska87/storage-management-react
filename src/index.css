@@ -118,6 +118,16 @@ body {
   box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
 }
 
+.btn-info {
+  background: rgba(100, 181, 246, 0.8);
+  color: white;
+}
+
+.btn-info:hover:not(:disabled) {
+  background: rgba(66, 165, 245, 1);
+  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
+}
+
 /* Input Styles */
 .input {
   padding: 10px 14px;

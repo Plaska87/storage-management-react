@@ -1,5 +1,12 @@
 import React from "react";
-import { Save, FolderOpen, Trash2, Download, Factory } from "lucide-react";
+import {
+  Save,
+  FolderOpen,
+  Trash2,
+  Download,
+  Factory,
+  BarChart3,
+} from "lucide-react";
 import { useStorage } from "../context/StorageContext";
 import "./Header.css";
 
@@ -10,44 +17,53 @@ function Header() {
     <header className="header">
       <div className="header-title">
         <Factory size={24} />
-        <h1>Storage Management System</h1>
+        <h1>System Zarządzania Magazynem</h1>
       </div>
 
       <div className="header-controls">
         <button
+          className="btn btn-info"
+          onClick={() => actions.setShowStatsModal(true)}
+          title="Wyświetl statystyki"
+        >
+          <BarChart3 size={16} />
+          Statystyki
+        </button>
+
+        <button
           className="btn btn-primary"
           onClick={actions.saveData}
-          title="Save Data"
+          title="Zapisz dane"
         >
           <Save size={16} />
-          Save Data
+          Zapisz
         </button>
 
         <button
           className="btn btn-secondary"
           onClick={actions.loadData}
-          title="Load Data"
+          title="Wczytaj dane"
         >
           <FolderOpen size={16} />
-          Load Data
+          Wczytaj
         </button>
 
         <button
           className="btn btn-danger"
           onClick={actions.clearAll}
-          title="Clear All Data"
+          title="Wyczyść wszystkie dane"
         >
           <Trash2 size={16} />
-          Clear All
+          Wyczyść
         </button>
 
         <button
           className="btn btn-success"
           onClick={actions.exportData}
-          title="Export Data"
+          title="Eksportuj dane"
         >
           <Download size={16} />
-          Export
+          Eksportuj
         </button>
       </div>
     </header>

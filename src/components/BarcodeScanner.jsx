@@ -79,7 +79,7 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
     } catch (err) {
       console.error("Error accessing camera:", err);
       setError(
-        "Unable to access camera. Please ensure camera permissions are granted."
+        "Nie można uzyskać dostępu do kamery. Upewnij się, że uprawnienia do kamery zostały przyznane."
       );
     }
   };
@@ -122,14 +122,14 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
         console.log("No barcode found, continuing...");
       } else {
         console.error("Error scanning barcode:", err);
-        setError("Error scanning barcode. Please try again.");
+        setError("Błąd skanowania kodu kreskowego. Spróbuj ponownie.");
       }
     }
   };
 
   const handleManualInput = () => {
     // Allow manual input as fallback
-    const code = prompt("Enter barcode manually:");
+    const code = prompt("Wprowadź kod kreskowy ręcznie:");
     if (code && code.trim()) {
       onScan(code.trim());
       onClose();
@@ -159,7 +159,7 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
     <div className="barcode-scanner-overlay">
       <div className="barcode-scanner-modal">
         <div className="scanner-header">
-          <h3>Scan Barcode</h3>
+          <h3>Skanuj kod kreskowy</h3>
           <button className="close-btn" onClick={handleClose}>
             <X size={24} />
           </button>
@@ -170,7 +170,7 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
             <div className="error-message">
               <p>{error}</p>
               <button className="manual-input-btn" onClick={handleManualInput}>
-                Enter Code Manually
+                Wprowadź kod ręcznie
               </button>
             </div>
           ) : (
@@ -199,8 +199,8 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
                     <div className="scan-line"></div>
                     <p>
                       {continuousScanning
-                        ? "Auto-scanning for Code128..."
-                        : "Scanning..."}
+                        ? "Automatyczne skanowanie Code128..."
+                        : "Skanowanie..."}
                     </p>
                   </div>
                 )}
@@ -215,7 +215,7 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
                       disabled={isScanning}
                     >
                       <Scan size={20} />
-                      {isScanning ? "Scanning..." : "Scan Once"}
+                      {isScanning ? "Skanowanie..." : "Skanuj raz"}
                     </button>
 
                     <button
@@ -229,27 +229,27 @@ function BarcodeScanner({ isOpen, onClose, onScan }) {
                     >
                       <Camera size={20} />
                       {continuousScanning
-                        ? "Stop Auto-Scan"
-                        : "Start Auto-Scan"}
+                        ? "Zatrzymaj auto-skan"
+                        : "Uruchom auto-skan"}
                     </button>
 
                     <button className="manual-btn" onClick={handleManualInput}>
-                      Enter Manually
+                      Wprowadź ręcznie
                     </button>
                   </>
                 ) : (
                   <div className="detected-code">
-                    <p>Detected Code:</p>
+                    <p>Wykryty kod:</p>
                     <div className="code-display">{detectedCode}</div>
                     <div className="code-actions">
                       <button className="use-code-btn" onClick={handleUseCode}>
-                        Use This Code
+                        Użyj tego kodu
                       </button>
                       <button
                         className="scan-again-btn"
                         onClick={() => setDetectedCode("")}
                       >
-                        Scan Again
+                        Skanuj ponownie
                       </button>
                     </div>
                   </div>

@@ -2,9 +2,9 @@ import React from "react";
 import { StorageProvider } from "./context/StorageContext";
 import Header from "./components/Header";
 import SearchPanel from "./components/SearchPanel";
-import StatsPanel from "./components/StatsPanel";
 import StorageGrid from "./components/StorageGrid";
 import EditModal from "./components/EditModal";
+import StatsModal from "./components/StatsModal";
 import Toast from "./components/Toast";
 import "./App.css";
 
@@ -14,9 +14,9 @@ function App() {
       <div className="app">
         <Header />
         <SearchPanel />
-        <StatsPanel />
         <StorageGrid />
         <EditModal />
+        <StatsModal />
         <Toast />
       </div>
     </StorageProvider>

@@ -22,6 +22,7 @@ const ACTIONS = {
   SHOW_TOAST: "SHOW_TOAST",
   HIDE_TOAST: "HIDE_TOAST",
   MOVE_PALLET: "MOVE_PALLET",
+  SET_SHOW_STATS_MODAL: "SET_SHOW_STATS_MODAL",
 };
 
 // Initial state
@@ -31,6 +32,7 @@ const initialState = {
   searchResults: [],
   editingPallet: null,
   toast: { show: false, message: "", type: "info" },
+  showStatsModal: false,
 };
 
 // Reducer
@@ -99,6 +101,9 @@ function storageReducer(state, action) {
 
       return { ...state, storageData: updatedData };
 
+    case ACTIONS.SET_SHOW_STATS_MODAL:
+      return { ...state, showStatsModal: action.payload };
+
     default:
       return state;
   }
@@ -148,11 +153,11 @@ export function StorageProvider({ children }) {
     clearAll: () => {
       if (
         window.confirm(
-          "Are you sure you want to clear all storage data? This action cannot be undone."
+          "Czy na pewno chcesz wyczyścić wszystkie dane magazynowe? Ta akcja nie może zostać cofnięta."
         )
       ) {
         dispatch({ type: ACTIONS.CLEAR_ALL });
-        actions.showToast("All data cleared!", "warning");
+        actions.showToast("Wszystkie dane zostały wyczyszczone!", "warning");
       }
     },
 
@@ -184,15 +189,15 @@ export function StorageProvider({ children }) {
         type: ACTIONS.MOVE_PALLET,
         payload: { fromKey, toKey },
       });
-      actions.showToast("Pallet moved successfully!", "success");
+      actions.showToast("Paleta została przeniesiona!", "success");
     },
 
     saveData: () => {
       try {
         localStorage.setItem("storageData", JSON.stringify(state.storageData));
-        actions.showToast("Data saved successfully!", "success");
+        actions.showToast("Dane zostały zapisane!", "success");
       } catch (error) {
-        actions.showToast("Error saving data!", "error");
+        actions.showToast("Błąd podczas zapisywania danych!", "error");
       }
     },
 
@@ -204,12 +209,12 @@ export function StorageProvider({ children }) {
             type: ACTIONS.SET_STORAGE_DATA,
             payload: JSON.parse(savedData),
           });
-          actions.showToast("Data loaded successfully!", "success");
+          actions.showToast("Dane zostały wczytane!", "success");
         } else {
-          actions.showToast("No saved data found", "warning");
+          actions.showToast("Nie znaleziono zapisanych danych", "warning");
         }
       } catch (error) {
-        actions.showToast("Error loading data!", "error");
+        actions.showToast("Błąd podczas wczytywania danych!", "error");
       }
     },
 
@@ -230,10 +235,14 @@ export function StorageProvider({ children }) {
         }.json`;
         link.click();
 
-        actions.showToast("Data exported successfully!", "success");
+        actions.showToast("Dane zostały wyeksportowane!", "success");
       } catch (error) {
-        actions.showToast("Error exporting data!", "error");
+        actions.showToast("Błąd podczas eksportowania danych!", "error");
       }
+    },
+
+    setShowStatsModal: (show) => {
+      dispatch({ type: ACTIONS.SET_SHOW_STATS_MODAL, payload: show });
     },
   };
 
