@@ -87,8 +87,13 @@ function SearchPanel() {
         inline: "center",
       });
 
-      // Set the specific pallet to be highlighted (we'll need to add this to context)
-      // For now, we'll just clear the search
+      // Highlight the pallet with green blinking animation
+      actions.setHighlightedPallet(palletKey);
+
+      // Clear the highlight after animation completes (2 seconds)
+      setTimeout(() => {
+        actions.setHighlightedPallet(null);
+      }, 2000);
     }
 
     // Clear search input and hide hints list

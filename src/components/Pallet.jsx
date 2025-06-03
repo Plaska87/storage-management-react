@@ -7,12 +7,17 @@ function Pallet({ palletKey, row, col, palletIdx }) {
   const { state, actions } = useStorage();
   const material = state.storageData[palletKey] || "";
   const isEmpty = !material || material.trim() === "";
+  const isHighlighted = state.highlightedPallet === palletKey;
 
   const handleClick = () => {
     actions.setEditingPallet(palletKey);
   };
 
-  const palletClasses = ["pallet", isEmpty ? "empty" : "occupied"]
+  const palletClasses = [
+    "pallet",
+    isEmpty ? "empty" : "occupied",
+    isHighlighted ? "search-highlight" : null,
+  ]
     .filter(Boolean)
     .join(" ");
 

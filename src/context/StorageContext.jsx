@@ -23,6 +23,7 @@ const ACTIONS = {
   HIDE_TOAST: "HIDE_TOAST",
   MOVE_PALLET: "MOVE_PALLET",
   SET_SHOW_STATS_MODAL: "SET_SHOW_STATS_MODAL",
+  SET_HIGHLIGHTED_PALLET: "SET_HIGHLIGHTED_PALLET",
 };
 
 // Initial state
@@ -33,6 +34,7 @@ const initialState = {
   editingPallet: null,
   toast: { show: false, message: "", type: "info" },
   showStatsModal: false,
+  highlightedPallet: null,
 };
 
 // Reducer
@@ -103,6 +105,9 @@ function storageReducer(state, action) {
 
     case ACTIONS.SET_SHOW_STATS_MODAL:
       return { ...state, showStatsModal: action.payload };
+
+    case ACTIONS.SET_HIGHLIGHTED_PALLET:
+      return { ...state, highlightedPallet: action.payload };
 
     default:
       return state;
@@ -243,6 +248,10 @@ export function StorageProvider({ children }) {
 
     setShowStatsModal: (show) => {
       dispatch({ type: ACTIONS.SET_SHOW_STATS_MODAL, payload: show });
+    },
+
+    setHighlightedPallet: (palletKey) => {
+      dispatch({ type: ACTIONS.SET_HIGHLIGHTED_PALLET, payload: palletKey });
     },
   };
 
