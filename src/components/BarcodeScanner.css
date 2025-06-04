@@ -158,8 +158,12 @@
 }
 
 @keyframes scan {
-  0% { transform: translateY(-75px); }
-  100% { transform: translateY(75px); }
+  0% {
+    transform: translateY(-75px);
+  }
+  100% {
+    transform: translateY(75px);
+  }
 }
 
 .scanner-controls {
@@ -168,7 +172,11 @@
   gap: 12px;
 }
 
-.scan-btn, .manual-btn, .manual-input-btn, .use-code-btn, .scan-again-btn {
+.scan-btn,
+.manual-btn,
+.manual-input-btn,
+.use-code-btn,
+.scan-again-btn {
   padding: 12px 20px;
   border: none;
   border-radius: 8px;
@@ -198,13 +206,15 @@
   cursor: not-allowed;
 }
 
-.manual-btn, .manual-input-btn {
+.manual-btn,
+.manual-input-btn {
   background: rgba(100, 181, 246, 0.2);
   color: #64b5f6;
   border: 1px solid rgba(100, 181, 246, 0.3);
 }
 
-.manual-btn:hover, .manual-input-btn:hover {
+.manual-btn:hover,
+.manual-input-btn:hover {
   background: rgba(100, 181, 246, 0.3);
   border-color: rgba(100, 181, 246, 0.5);
 }
@@ -225,7 +235,7 @@
   border: 1px solid rgba(100, 181, 246, 0.3);
   border-radius: 6px;
   padding: 12px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 1.1rem;
   font-weight: bold;
   color: #64b5f6;
@@ -267,28 +277,28 @@
   .barcode-scanner-overlay {
     padding: 10px;
   }
-  
+
   .barcode-scanner-modal {
     max-width: 100%;
   }
-  
+
   .camera-container {
     height: 250px;
   }
-  
+
   .scan-frame {
     width: 200px;
     height: 120px;
   }
-  
+
   .scanner-header {
     padding: 15px;
   }
-  
+
   .scanner-content {
     padding: 15px;
   }
-  
+
   .code-actions {
     flex-direction: column;
   }

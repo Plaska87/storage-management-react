@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { X, Save, Trash2, Package, Scan } from "lucide-react";
+import { X, Save, Trash2, Package, Scan, Printer } from "lucide-react";
 import { useStorage } from "../context/StorageContext";
 import BarcodeScanner from "./BarcodeScanner";
+import LabelPrintModal from "./LabelPrintModal";
 import "./EditModal.css";
 
 function EditModal() {
   const { state, actions } = useStorage();
   const [materialInput, setMaterialInput] = useState("");
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
+  const [showLabelPrintModal, setShowLabelPrintModal] = useState(false);
+  const [savedMaterial, setSavedMaterial] = useState("");
 
   const isOpen = state.editingPallet !== null;
   const currentMaterial = state.editingPallet
@@ -35,8 +38,17 @@ function EditModal() {
     if (state.editingPallet) {
       const trimmedMaterial = materialInput.trim();
       actions.updatePallet(state.editingPallet, trimmedMaterial);
+      setSavedMaterial(trimmedMaterial);
       actions.showToast("Zmiany zostały zapisane!", "success");
-      handleClose();
+
+      // If material was added (not just cleared), show print option
+      if (trimmedMaterial) {
+        setTimeout(() => {
+          setShowLabelPrintModal(true);
+        }, 500);
+      } else {
+        handleClose();
+      }
     }
   };
 
@@ -51,6 +63,19 @@ function EditModal() {
   const handleClose = () => {
     actions.setEditingPallet(null);
     setMaterialInput("");
+    setSavedMaterial("");
+    setShowLabelPrintModal(false);
+  };
+
+  const handlePrintLabel = () => {
+    if (savedMaterial && state.editingPallet) {
+      setShowLabelPrintModal(true);
+    }
+  };
+
+  const handleLabelPrintClose = () => {
+    setShowLabelPrintModal(false);
+    handleClose();
   };
 
   const handleKeyPress = (e) => {
@@ -144,6 +169,17 @@ function EditModal() {
             Zapisz
           </button>
 
+          {savedMaterial && (
+            <button
+              className="btn btn-info"
+              onClick={handlePrintLabel}
+              title="Drukuj etykietę"
+            >
+              <Printer size={16} />
+              Drukuj etykietę
+            </button>
+          )}
+
           <button
             className="btn btn-warning"
             onClick={handleClear}
@@ -169,6 +205,15 @@ function EditModal() {
         isOpen={showBarcodeScanner}
         onClose={() => setShowBarcodeScanner(false)}
         onScan={handleBarcodeScanned}
+      />
+
+      {/* Label Print Modal */}
+      <LabelPrintModal
+        isOpen={showLabelPrintModal}
+        onClose={handleLabelPrintClose}
+        materialName={savedMaterial}
+        palletLocation={getPalletInfo()}
+        palletKey={state.editingPallet}
       />
     </div>
   );
