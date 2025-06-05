@@ -11,6 +11,11 @@ export const STORAGE_CONFIG = {
   ROWS: 6,
   PALLETS_PER_CELL: 3,
   FORKLIFT_PATHWAY: { col: 5, startRow: 3 },
+  RACKS: [
+    { id: "A", name: "Regał A", color: "#dc3545" },
+    { id: "B", name: "Regał B", color: "#8b0000" },
+    { id: "C", name: "Regał C", color: "#b91c1c" },
+  ],
 };
 
 // API Service Functions
@@ -136,6 +141,7 @@ const ACTIONS = {
   SET_HIGHLIGHTED_PALLET: "SET_HIGHLIGHTED_PALLET",
   SET_LOADING: "SET_LOADING",
   SET_ERROR: "SET_ERROR",
+  SET_CURRENT_RACK: "SET_CURRENT_RACK",
 };
 
 // Initial state
@@ -150,6 +156,7 @@ const initialState = {
   highlightedPallet: null,
   loading: false,
   error: null,
+  currentRack: "A", // Default to Rack A
 };
 
 // Reducer
@@ -286,6 +293,9 @@ function storageReducer(state, action) {
 
     case ACTIONS.SET_HIGHLIGHTED_PALLET:
       return { ...state, highlightedPallet: action.payload };
+
+    case ACTIONS.SET_CURRENT_RACK:
+      return { ...state, currentRack: action.payload };
 
     default:
       return state;
@@ -598,6 +608,11 @@ export function StorageProvider({ children }) {
       dispatch({ type: ACTIONS.SET_HIGHLIGHTED_PALLET, payload: palletKey });
     },
 
+    // Set current rack
+    setCurrentRack: (rackId) => {
+      dispatch({ type: ACTIONS.SET_CURRENT_RACK, payload: rackId });
+    },
+
     // Get database health status
     checkDatabaseHealth: async () => {
       try {
@@ -628,14 +643,26 @@ export function useStorage() {
 }
 
 // Helper function to calculate stats
-export function getStats(storageData) {
+export function getStats(storageData, rackId = null) {
   const totalPallets =
     STORAGE_CONFIG.ROWS *
       STORAGE_CONFIG.COLUMNS *
       STORAGE_CONFIG.PALLETS_PER_CELL -
     3 * STORAGE_CONFIG.PALLETS_PER_CELL; // Subtract forklift pathway
 
-  const occupiedCount = Object.values(storageData).filter(
+  let dataToAnalyze = storageData;
+
+  // If rackId is specified, filter data for that rack
+  if (rackId) {
+    dataToAnalyze = {};
+    Object.keys(storageData).forEach((key) => {
+      if (key.startsWith(`${rackId}_`)) {
+        dataToAnalyze[key] = storageData[key];
+      }
+    });
+  }
+
+  const occupiedCount = Object.values(dataToAnalyze).filter(
     (material) => material && material.trim()
   ).length;
   const emptyCount = totalPallets - occupiedCount;

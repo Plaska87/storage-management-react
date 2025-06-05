@@ -4,7 +4,7 @@ import Pallet from "./Pallet";
 import "./StorageCell.css";
 
 function StorageCell({ row, col }) {
-  const { actions } = useStorage();
+  const { state } = useStorage();
 
   // Generate pallets for this cell
   const renderPallets = () => {
@@ -15,7 +15,7 @@ function StorageCell({ row, col }) {
       palletIdx < STORAGE_CONFIG.PALLETS_PER_CELL;
       palletIdx++
     ) {
-      const palletKey = `${row}_${col}_${palletIdx}`;
+      const palletKey = `${state.currentRack}_${row}_${col}_${palletIdx}`;
       pallets.push(
         <Pallet
           key={palletKey}
@@ -23,6 +23,7 @@ function StorageCell({ row, col }) {
           row={row}
           col={col}
           palletIdx={palletIdx}
+          rackId={state.currentRack}
         />
       );
     }

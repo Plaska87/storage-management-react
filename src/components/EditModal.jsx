@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { X, Save, Trash2, Package, Scan, Printer } from "lucide-react";
-import { useStorage } from "../context/StorageContext";
+import { useStorage, STORAGE_CONFIG } from "../context/StorageContext";
 import BarcodeScanner from "./BarcodeScanner";
 import LabelPrintModal from "./LabelPrintModal";
 import "./EditModal.css";
@@ -28,10 +28,26 @@ function EditModal() {
   const getPalletInfo = () => {
     if (!state.editingPallet) return "";
 
-    const [row, col, palletIdx] = state.editingPallet.split("_").map(Number);
-    const columnLetter = String.fromCharCode(65 + col);
+    const parts = state.editingPallet.split("_");
+    if (parts.length === 4) {
+      // New format: rack_row_col_pallet
+      const [rackId, row, col, palletIdx] = parts;
+      const columnLetter = String.fromCharCode(65 + parseInt(col));
+      const rackName =
+        STORAGE_CONFIG.RACKS.find((r) => r.id === rackId)?.name || rackId;
 
-    return `Rząd ${row + 1}, Kolumna ${columnLetter}, Paleta ${palletIdx + 1}`;
+      return `${rackName}, Rząd ${
+        parseInt(row) + 1
+      }, Kolumna ${columnLetter}, Paleta ${parseInt(palletIdx) + 1}`;
+    } else {
+      // Old format: row_col_pallet (for backward compatibility)
+      const [row, col, palletIdx] = parts.map(Number);
+      const columnLetter = String.fromCharCode(65 + col);
+
+      return `Rząd ${row + 1}, Kolumna ${columnLetter}, Paleta ${
+        palletIdx + 1
+      }`;
+    }
   };
 
   const handleSave = () => {

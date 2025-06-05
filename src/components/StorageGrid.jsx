@@ -1,9 +1,10 @@
 import React from "react";
-import { STORAGE_CONFIG } from "../context/StorageContext";
+import { STORAGE_CONFIG, useStorage } from "../context/StorageContext";
 import StorageCell from "./StorageCell";
 import "./StorageGrid.css";
 
 function StorageGrid() {
+  const { state } = useStorage();
   // Generate column headers (A-M)
   const columnHeaders = Array.from({ length: STORAGE_CONFIG.COLUMNS }, (_, i) =>
     String.fromCharCode(65 + i)
@@ -35,7 +36,7 @@ function StorageGrid() {
               STORAGE_CONFIG.ROWS - STORAGE_CONFIG.FORKLIFT_PATHWAY.startRow;
             cells.push(
               <div
-                key={`pathway-merged`}
+                key={`pathway-merged-${state.currentRack}`}
                 className="storage-cell pathway pathway-merged"
                 style={{
                   gridRow: `span ${pathwayRows}`,

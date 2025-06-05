@@ -39,9 +39,9 @@ export class ZebraLabelPrinter {
       minute: "2-digit",
     });
 
-    // Clean material name for barcode (remove special characters)
+    // Clean material name for barcode (allow letters, numbers, spaces, and hyphens)
     const barcodeData = materialName
-      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/[^a-zA-Z0-9\s\-]/g, "")
       .toUpperCase();
 
     // Generate logo ZPL if not provided
@@ -286,9 +286,9 @@ ${logoGraphic}
       minute: "2-digit",
     });
 
-    // Generate Code128 barcode image
+    // Generate Code128 barcode image (allow letters, numbers, spaces, and hyphens)
     const barcodeData = materialName
-      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/[^a-zA-Z0-9\s\-]/g, "")
       .toUpperCase();
     const barcodeImage = this.generateCode128Image(barcodeData);
 
@@ -554,7 +554,7 @@ export const ZPLUtils = {
    */
   cleanForBarcode: (text) => {
     return text
-      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/[^a-zA-Z0-9\s\-]/g, "")
       .toUpperCase()
       .trim();
   },

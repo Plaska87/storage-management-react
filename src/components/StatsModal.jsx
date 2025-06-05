@@ -22,19 +22,19 @@ function StatsModal() {
       icon: Package,
       label: "Łączna liczba palet",
       value: stats.totalPallets,
-      color: "#64b5f6",
+      color: "#dc3545",
     },
     {
       icon: PackageCheck,
       label: "Zajęte",
       value: stats.occupiedCount,
-      color: "#39c96e",
+      color: "#28a745",
     },
     {
       icon: PackageX,
       label: "Puste",
       value: stats.emptyCount,
-      color: "#b0bec5",
+      color: "#6c757d",
     },
     {
       icon: TrendingUp,
@@ -42,10 +42,10 @@ function StatsModal() {
       value: `${stats.utilization}%`,
       color:
         stats.utilization > 80
-          ? "#e74c3c"
+          ? "#dc3545"
           : stats.utilization > 60
-          ? "#f39c12"
-          : "#39c96e",
+          ? "#ff8c00"
+          : "#28a745",
     },
   ];
 

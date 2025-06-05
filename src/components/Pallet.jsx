@@ -3,7 +3,7 @@ import { Package } from "lucide-react";
 import { useStorage } from "../context/StorageContext";
 import "./Pallet.css";
 
-function Pallet({ palletKey, row, col, palletIdx }) {
+function Pallet({ palletKey, row, col, palletIdx, rackId }) {
   const { state, actions } = useStorage();
   const material = state.storageData[palletKey] || "";
   const isEmpty = !material || material.trim() === "";

@@ -13,9 +13,10 @@
 }
 
 .label-print-modal {
-  background: white;
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(220, 53, 69, 0.3);
   border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   max-width: 700px;
   width: 100%;
   max-height: 90vh;
@@ -39,9 +40,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  border-bottom: 1px solid rgba(220, 53, 69, 0.2);
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
   border-radius: 12px 12px 0 0;
 }
 
@@ -54,7 +55,7 @@
 .label-print-modal .close-btn {
   background: none;
   border: none;
-  color: white;
+  color: #dc3545;
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
@@ -62,24 +63,31 @@
 }
 
 .label-print-modal .close-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(220, 53, 69, 0.2);
 }
 
 .label-print-modal .modal-content {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .label-info {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(220, 53, 69, 0.2);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .label-info h4 {
   margin: 0 0 12px 0;
-  color: #374151;
+  color: #dc3545;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -87,7 +95,7 @@
 .info-row {
   margin-bottom: 8px;
   font-size: 0.9rem;
-  color: #4b5563;
+  color: #e0e0e0;
 }
 
 .info-row:last-child {
@@ -95,13 +103,15 @@
 }
 
 .info-row strong {
-  color: #1f2937;
+  color: #dc3545;
   min-width: 100px;
   display: inline-block;
 }
 
 .print-options {
   margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .option-group {
@@ -112,28 +122,31 @@
   display: block;
   margin-bottom: 6px;
   font-weight: 500;
-  color: #374151;
+  color: #dc3545;
   font-size: 0.9rem;
 }
 
 .copies-input {
   width: 80px;
   padding: 8px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid rgba(220, 53, 69, 0.3);
   border-radius: 6px;
   font-size: 0.9rem;
+  background: rgba(10, 10, 10, 0.8);
+  color: #e0e0e0;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .copies-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #dc3545;
+  box-shadow: 0 0 12px rgba(220, 53, 69, 0.4);
+  background: rgba(10, 10, 10, 0.9);
 }
 
 .printer-settings {
-  background: #fef3c7;
-  border: 1px solid #f59e0b;
+  background: rgba(255, 140, 0, 0.1);
+  border: 1px solid rgba(255, 140, 0, 0.3);
   border-radius: 8px;
   padding: 16px;
   margin-top: 16px;
@@ -141,7 +154,7 @@
 
 .printer-settings h4 {
   margin: 0 0 12px 0;
-  color: #92400e;
+  color: #ff8c00;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -155,22 +168,24 @@
 .ip-input {
   flex: 1;
   padding: 8px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid rgba(255, 140, 0, 0.3);
   border-radius: 6px;
   font-size: 0.9rem;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
+  background: rgba(10, 10, 10, 0.8);
+  color: #e0e0e0;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .ip-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #ff8c00;
+  box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
 }
 
 .test-connection-btn {
   padding: 8px 12px;
-  background: #3b82f6;
+  background: #ff8c00;
   color: white;
   border: none;
   border-radius: 6px;
@@ -184,7 +199,7 @@
 }
 
 .test-connection-btn:hover:not(:disabled) {
-  background: #2563eb;
+  background: #ffa500;
 }
 
 .test-connection-btn:disabled {
@@ -194,11 +209,13 @@
 
 .preview-section {
   margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .preview-section h4 {
   margin: 0 0 12px 0;
-  color: #374151;
+  color: #dc3545;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -207,8 +224,8 @@
   display: flex;
   justify-content: center;
   padding: 20px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: rgba(40, 40, 40, 0.6);
+  border: 1px solid rgba(220, 53, 69, 0.2);
   border-radius: 8px;
   overflow: auto;
 }
@@ -217,10 +234,11 @@
   display: flex;
   gap: 8px;
   padding: 20px 24px;
-  border-top: 1px solid #e5e7eb;
-  background: #f9fafb;
+  border-top: 1px solid rgba(220, 53, 69, 0.2);
+  background: rgba(30, 30, 30, 0.8);
   border-radius: 0 0 12px 12px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .btn {
@@ -239,14 +257,14 @@
 }
 
 .btn-primary {
-  background: #10b981;
+  background: #dc3545;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #059669;
+  background: #b91c1c;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
 }
 
 .btn-secondary {
@@ -272,14 +290,14 @@
 }
 
 .btn-outline {
-  background: white;
-  color: #374151;
-  border: 1px solid #d1d5db;
+  background: rgba(40, 40, 40, 0.8);
+  color: #e0e0e0;
+  border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
 .btn-outline:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
+  background: rgba(60, 60, 60, 0.9);
+  border-color: rgba(220, 53, 69, 0.5);
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -289,52 +307,27 @@
   .label-print-overlay {
     padding: 10px;
   }
-  
+
   .label-print-modal {
     max-width: 100%;
     margin: 0;
   }
-  
+
   .modal-footer {
     flex-direction: column;
   }
-  
+
   .btn {
     justify-content: center;
     width: 100%;
   }
-  
+
   .ip-input-group {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .test-connection-btn {
     justify-content: center;
-  }
-}
-
-/* Print styles for label preview */
-@media print {
-  .label-print-overlay,
-  .label-print-modal {
-    position: static;
-    background: none;
-    box-shadow: none;
-    max-width: none;
-    max-height: none;
-  }
-  
-  .modal-header,
-  .modal-footer,
-  .print-options,
-  .printer-settings {
-    display: none;
-  }
-  
-  .label-preview {
-    background: white;
-    border: none;
-    padding: 0;
   }
 }

@@ -20,18 +20,37 @@ function SearchPanel() {
 
       Object.entries(state.storageData).forEach(([palletKey, material]) => {
         if (material && material.toLowerCase().includes(searchLower)) {
-          const [row, col, palletIdx] = palletKey.split("_").map(Number);
-          const columnLetter = String.fromCharCode(65 + col);
+          const parts = palletKey.split("_");
+          let rackId, row, col, palletIdx, rackName, coordinates;
+
+          if (parts.length === 4) {
+            // New format: rack_row_col_pallet
+            [rackId, row, col, palletIdx] = parts;
+            const columnLetter = String.fromCharCode(65 + parseInt(col));
+            rackName =
+              STORAGE_CONFIG.RACKS.find((r) => r.id === rackId)?.name || rackId;
+            coordinates = `${rackName}, Rząd ${
+              parseInt(row) + 1
+            }, Kolumna ${columnLetter}, Paleta ${parseInt(palletIdx) + 1}`;
+          } else {
+            // Old format: row_col_pallet (for backward compatibility)
+            [row, col, palletIdx] = parts.map(Number);
+            const columnLetter = String.fromCharCode(65 + col);
+            rackId = "A"; // Default to rack A for old format
+            rackName = "Regał A";
+            coordinates = `${rackName}, Rząd ${
+              row + 1
+            }, Kolumna ${columnLetter}, Paleta ${palletIdx + 1}`;
+          }
 
           results.push({
             palletKey,
             material,
-            coordinates: `Rząd ${row + 1}, Kolumna ${columnLetter}, Paleta ${
-              palletIdx + 1
-            }`,
-            row,
-            col,
-            palletIdx,
+            coordinates,
+            rackId,
+            row: parseInt(row),
+            col: parseInt(col),
+            palletIdx: parseInt(palletIdx),
           });
         }
       });
@@ -75,22 +94,32 @@ function SearchPanel() {
     actions.setSearchResults([]);
   };
 
-  const handleResultClick = (palletKey) => {
-    // Scroll to pallet and highlight it
-    const palletElement = document.querySelector(
-      `[data-pallet-key="${palletKey}"]`
-    );
-    if (palletElement) {
-      palletElement.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
-
-      // Clear any previous highlight and set new one
-      // The highlight will stay until next search
-      actions.setHighlightedPallet(palletKey);
+  const handleResultClick = (result) => {
+    // Switch to the correct rack first
+    if (result.rackId && result.rackId !== state.currentRack) {
+      actions.setCurrentRack(result.rackId);
     }
+
+    // Wait a moment for rack switch, then scroll to pallet and highlight it
+    setTimeout(
+      () => {
+        const palletElement = document.querySelector(
+          `[data-pallet-key="${result.palletKey}"]`
+        );
+        if (palletElement) {
+          palletElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center",
+          });
+
+          // Clear any previous highlight and set new one
+          // The highlight will stay until next search
+          actions.setHighlightedPallet(result.palletKey);
+        }
+      },
+      result.rackId !== state.currentRack ? 100 : 0
+    );
 
     // Clear search input and hide hints list
     setSearchInput("");
@@ -139,7 +168,7 @@ function SearchPanel() {
                 <div
                   key={result.palletKey}
                   className="search-result-item"
-                  onClick={() => handleResultClick(result.palletKey)}
+                  onClick={() => handleResultClick(result)}
                   title={`Kliknij aby przejść do ${result.material} w ${result.coordinates}`}
                 >
                   <div className="search-result-material">
