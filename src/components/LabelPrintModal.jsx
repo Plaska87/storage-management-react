@@ -1,35 +1,82 @@
 import React, { useState, useEffect } from "react";
-import { X, Printer, Download, Eye, Settings, Wifi, WifiOff } from "lucide-react";
+import {
+  X,
+  Printer,
+  Download,
+  Eye,
+  Settings,
+  Wifi,
+  WifiOff,
+} from "lucide-react";
 import { zebraLabelPrinter, ZPLUtils } from "../utils/ZebraLabelPrinter";
 import { useStorage } from "../context/StorageContext";
+import aibLogo from "../assets/aib-logo.png";
 import "./LabelPrintModal.css";
 
-function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, palletKey }) {
+function LabelPrintModal({
+  isOpen,
+  onClose,
+  materialName,
+  palletLocation,
+  palletKey,
+}) {
   const { actions } = useStorage();
   const [copies, setCopies] = useState(1);
-  const [printerIP, setPrinterIP] = useState(localStorage.getItem('zebraPrinterIP') || '');
+  const [printerIP, setPrinterIP] = useState(
+    localStorage.getItem("zebraPrinterIP") || ""
+  );
   const [showSettings, setShowSettings] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [previewHTML, setPreviewHTML] = useState('');
-  const [zplCode, setZPLCode] = useState('');
+  const [previewHTML, setPreviewHTML] = useState("");
+  const [zplCode, setZPLCode] = useState("");
 
   // Generate label data when modal opens
   useEffect(() => {
     if (isOpen && materialName) {
-      const labelData = {
-        materialName,
-        location: palletLocation,
-        palletKey,
-        date: new Date(),
-        copies
+      const generateLabel = async () => {
+        try {
+          // First, convert the logo to ZPL format
+          console.log("Converting logo:", aibLogo);
+          const logoZPL = await zebraLabelPrinter.generateLogoZPL(aibLogo);
+          console.log("Logo ZPL generated:", logoZPL ? "Success" : "Failed");
+
+          const labelData = {
+            materialName,
+            location: palletLocation,
+            palletKey,
+            date: new Date(),
+            copies,
+            logoZPL: logoZPL,
+            logoUrl: aibLogo,
+          };
+
+          const zpl = zebraLabelPrinter.generateZPL(labelData);
+          const preview = zebraLabelPrinter.generatePreview(labelData);
+
+          setZPLCode(zpl);
+          setPreviewHTML(preview);
+        } catch (error) {
+          console.error("Error generating label:", error);
+          // Fallback without logo
+          const fallbackData = {
+            materialName,
+            location: palletLocation,
+            palletKey,
+            date: new Date(),
+            copies,
+            logoZPL: null,
+            logoUrl: null,
+          };
+          const zpl = zebraLabelPrinter.generateZPL(fallbackData);
+          const preview = zebraLabelPrinter.generatePreview(fallbackData);
+
+          setZPLCode(zpl);
+          setPreviewHTML(preview);
+        }
       };
 
-      const zpl = zebraLabelPrinter.generateZPL(labelData);
-      const preview = zebraLabelPrinter.generatePreview(labelData);
-      
-      setZPLCode(zpl);
-      setPreviewHTML(preview);
+      generateLabel();
     }
   }, [isOpen, materialName, palletLocation, palletKey, copies]);
 
@@ -37,7 +84,7 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
   useEffect(() => {
     if (printerIP) {
       zebraLabelPrinter.setPrinterIP(printerIP);
-      localStorage.setItem('zebraPrinterIP', printerIP);
+      localStorage.setItem("zebraPrinterIP", printerIP);
     }
   }, [printerIP]);
 
@@ -52,7 +99,9 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
       const connected = await zebraLabelPrinter.testConnection();
       setIsConnected(connected);
       actions.showToast(
-        connected ? "Połączenie z drukarką udane!" : "Nie można połączyć się z drukarką",
+        connected
+          ? "Połączenie z drukarką udane!"
+          : "Nie można połączyć się z drukarką",
         connected ? "success" : "error"
       );
     } catch (error) {
@@ -71,13 +120,19 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
     }
 
     if (!ZPLUtils.isValidForBarcode(materialName)) {
-      actions.showToast("Nieprawidłowa nazwa materiału dla kodu kreskowego", "error");
+      actions.showToast(
+        "Nieprawidłowa nazwa materiału dla kodu kreskowego",
+        "error"
+      );
       return;
     }
 
     try {
       await zebraLabelPrinter.sendToPrinter(zplCode);
-      actions.showToast(`Etykieta została wysłana do drukarki (${copies} kopii)`, "success");
+      actions.showToast(
+        `Etykieta została wysłana do drukarki (${copies} kopii)`,
+        "success"
+      );
       onClose();
     } catch (error) {
       actions.showToast("Błąd drukowania: " + error.message, "error");
@@ -85,7 +140,10 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
   };
 
   const handleDownloadZPL = () => {
-    const filename = `etykieta_${materialName.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.zpl`;
+    const filename = `etykieta_${materialName.replace(
+      /[^a-zA-Z0-9]/g,
+      "_"
+    )}_${Date.now()}.zpl`;
     zebraLabelPrinter.downloadZPL(zplCode, filename);
     actions.showToast("Plik ZPL został pobrany", "success");
   };
@@ -96,7 +154,7 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
   };
 
   const handlePreview = () => {
-    const previewWindow = window.open('', '_blank', 'width=600,height=400');
+    const previewWindow = window.open("", "_blank", "width=600,height=400");
     previewWindow.document.write(`
       <!DOCTYPE html>
       <html>
@@ -174,7 +232,9 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
               <div className="printer-settings">
                 <h4>Ustawienia drukarki</h4>
                 <div className="option-group">
-                  <label htmlFor="printerIP">Adres IP drukarki Zebra ZT410:</label>
+                  <label htmlFor="printerIP">
+                    Adres IP drukarki Zebra ZT410:
+                  </label>
                   <div className="ip-input-group">
                     <input
                       id="printerIP"
@@ -192,9 +252,13 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
                       {isConnecting ? (
                         "Testowanie..."
                       ) : isConnected ? (
-                        <><Wifi size={16} /> Połączono</>
+                        <>
+                          <Wifi size={16} /> Połączono
+                        </>
                       ) : (
-                        <><WifiOff size={16} /> Testuj</>
+                        <>
+                          <WifiOff size={16} /> Testuj
+                        </>
                       )}
                     </button>
                   </div>
@@ -205,8 +269,8 @@ function LabelPrintModal({ isOpen, onClose, materialName, palletLocation, pallet
 
           <div className="preview-section">
             <h4>Podgląd etykiety</h4>
-            <div 
-              className="label-preview" 
+            <div
+              className="label-preview"
               dangerouslySetInnerHTML={{ __html: previewHTML }}
             />
           </div>

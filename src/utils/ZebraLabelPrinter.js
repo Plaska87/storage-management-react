@@ -18,15 +18,16 @@ export class ZebraLabelPrinter {
    * @param {string} labelData.palletKey - Pallet key (e.g., "0_0_0")
    * @param {Date} labelData.date - Date for the label
    * @param {number} labelData.copies - Number of copies to print
+   * @param {string} labelData.logoZPL - Optional ZPL logo data
    * @returns {string} ZPL code
    */
   generateZPL(labelData) {
     const {
       materialName,
       location,
-      palletKey,
       date = new Date(),
       copies = 1,
+      logoZPL = null,
     } = labelData;
 
     // Format date as DD/MM/YYYY HH:MM
@@ -43,12 +44,54 @@ export class ZebraLabelPrinter {
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .toUpperCase();
 
-    // 100x60mm label = 394x236 dots at 203dpi (ZT410 resolution)
+    // Generate logo ZPL if not provided
+    let logoGraphic = "";
+    if (logoZPL) {
+      logoGraphic = logoZPL;
+    } else {
+      // Use a simple AIB logo representation (bigger)
+      logoGraphic = `~DGR:LOGO.GRF,960,30,
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+F00000000000000000000000000FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFFFFFFFFFFFFFFFFFFFFFF
+F0FFFFFFFFFFFFFFFFFFFFFFFFFF
+F0FFFFFFFFFFFFFFFFFFFFFFFFFF
+F0FFFFFFFFFFFFFFFFFFFFFFFFFF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F0FFFFFF0000000000000000F0FF
+F00000000000000000000000000FF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF`;
+    }
+
+    // Actual label size: 812x479 dots (100x60mm at higher DPI)
+    // Full scale label with AIB logo and no pallet key
     const zplCode = `
 ^XA
 ^MMT
-^PW394
-^LL236
+^PW812
+^LL479
 ^LS0
 ^LH0,0
 ^PON
@@ -56,22 +99,126 @@ export class ZebraLabelPrinter {
 ^MTT
 ^MD15
 
-^FT30,60^A0N,28,28^FH\\^CI28^FDMateriał:^FS^CI27
-^FT30,95^A0N,24,24^FH\\^CI28^FD${materialName}^FS^CI27
+${logoGraphic}
 
-^FT240,70^BY2,3,50^BCN,,Y,N
+^FO590,18^XGR:LOGO.GRF,1,1^FS
+
+^FT30,80^A0N,70,70^FH\\^CI28^FD${materialName}^FS^CI27
+
+^FT30,180^A0N,35,35^FH\\^CI28^FDLokalizacja: ${location}^FS^CI27
+^FT30,220^A0N,30,30^FH\\^CI28^FDData: ${formattedDate}^FS^CI27
+
+^FO30,250^GB750,3,3^FS
+
+^FT30,420^BY4,3,120^BCN,,Y,N
 ^FD${barcodeData}^FS
-
-^FT30,150^A0N,16,16^FH\\^CI28^FDLok: ${location}^FS^CI27
-
-^FT30,175^A0N,14,14^FH\\^CI28^FD${formattedDate}^FS^CI27
-
-^FT30,200^A0N,14,14^FH\\^CI28^FDKlucz: ${palletKey}^FS^CI27
 
 ^PQ${copies},0,1,Y
 ^XZ`;
 
     return zplCode.trim();
+  }
+
+  /**
+   * Generate ZPL graphic from logo image
+   * @param {string} logoUrl - Logo image URL
+   * @returns {Promise<string>} ZPL graphic string
+   */
+  async generateLogoZPL(logoUrl) {
+    if (!logoUrl) return null;
+
+    try {
+      // Logo size 1.5x bigger: 180x90 dots (1.5 times the previous size)
+      const logoData = await this.convertImageToZPL(logoUrl, 180, 90);
+      return logoData.zplGraphic;
+    } catch (error) {
+      console.warn("Failed to convert logo, using fallback:", error);
+      return null;
+    }
+  }
+
+  /**
+   * Convert image to ZPL graphic format
+   * @param {string} imageUrl - URL or data URL of the image
+   * @param {number} maxWidth - Maximum width in dots
+   * @param {number} maxHeight - Maximum height in dots
+   * @returns {Promise<string>} ZPL graphic data
+   */
+  async convertImageToZPL(imageUrl, maxWidth = 100, maxHeight = 50) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Calculate scaled dimensions
+        const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+        const width = Math.floor(img.width * scale);
+        const height = Math.floor(img.height * scale);
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw image
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert to monochrome bitmap
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+
+        let hexString = "";
+        const bytesPerRow = Math.ceil(width / 8);
+
+        for (let y = 0; y < height; y++) {
+          for (let byteIndex = 0; byteIndex < bytesPerRow; byteIndex++) {
+            let byte = 0;
+            for (let bit = 0; bit < 8; bit++) {
+              const x = byteIndex * 8 + bit;
+              if (x < width) {
+                const pixelIndex = (y * width + x) * 4;
+                const r = data[pixelIndex];
+                const g = data[pixelIndex + 1];
+                const b = data[pixelIndex + 2];
+                const brightness = (r + g + b) / 3;
+
+                if (brightness < 128) {
+                  // Black pixel
+                  byte |= 1 << (7 - bit);
+                }
+              }
+            }
+            hexString += byte.toString(16).padStart(2, "0").toUpperCase();
+          }
+        }
+
+        resolve({
+          width,
+          height,
+          bytesPerRow,
+          hexData: hexString,
+          zplGraphic: `~DGR:LOGO.GRF,${
+            hexString.length / 2
+          },${bytesPerRow},\n${hexString}`,
+        });
+      };
+
+      img.onerror = () => {
+        // Fallback to simple AIB text representation
+        resolve({
+          width: 60,
+          height: 30,
+          bytesPerRow: 8,
+          hexData: "",
+          zplGraphic: `~DGR:LOGO.GRF,240,8,\n${"00".repeat(240)}`,
+        });
+      };
+
+      img.src = imageUrl;
+    });
   }
 
   /**
@@ -85,10 +232,10 @@ export class ZebraLabelPrinter {
       const canvas = document.createElement("canvas");
       JsBarcode(canvas, data, {
         format: "CODE128",
-        width: 2,
-        height: 40,
+        width: 3,
+        height: 60,
         displayValue: false,
-        margin: 0,
+        margin: 5,
         background: "#ffffff",
         lineColor: "#000000",
       });
@@ -124,7 +271,12 @@ export class ZebraLabelPrinter {
    * @returns {string} HTML preview
    */
   generatePreview(labelData) {
-    const { materialName, location, palletKey, date = new Date() } = labelData;
+    const {
+      materialName,
+      location,
+      date = new Date(),
+      logoUrl = null,
+    } = labelData;
 
     const formattedDate = date.toLocaleString("pl-PL", {
       day: "2-digit",
@@ -144,49 +296,96 @@ export class ZebraLabelPrinter {
       <div style="
         width: 100mm;
         height: 60mm;
-        border: 3px solid #000;
-        padding: 4mm;
-        font-family: Arial, sans-serif;
+        border: 2px solid #333;
+        padding: 2mm;
+        font-family: 'Arial Black', Arial, sans-serif;
         background: white;
         box-sizing: border-box;
         position: relative;
-        display: flex;
         color: #000;
       ">
-        <!-- Left side: Text content -->
+        <!-- AIB Logo in top right corner -->
         <div style="
-          flex: 1;
+          position: absolute;
+          top: 2mm;
+          right: 2mm;
+          width: 30mm;
+          height: 18mm;
           display: flex;
-          flex-direction: column;
-          margin-right: 4mm;
+          align-items: center;
+          justify-content: center;
         ">
-          <div style="font-size: 12px; font-weight: 900; margin-bottom: 2mm; color: #000;">
-            Materiał:
-          </div>
-          <div style="font-size: 11px; font-weight: bold; margin-bottom: 4mm; word-wrap: break-word; line-height: 1.2; color: #000;">
-            ${materialName}
-          </div>
-
-          <div style="margin-top: auto;">
-            <div style="font-size: 8px; font-weight: 900; margin-bottom: 1mm; color: #000;">Lok: ${location}</div>
-            <div style="font-size: 8px; font-weight: bold; margin-bottom: 1mm; color: #000;">${formattedDate}</div>
-            <div style="font-size: 8px; font-weight: bold; color: #000;">Klucz: ${palletKey}</div>
-          </div>
+          ${
+            logoUrl
+              ? `<img src="${logoUrl}" alt="AIB Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" />`
+              : `<div style="background: #000; color: white; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; letter-spacing: 2px; font-family: Arial, sans-serif;">+AIB</div>`
+          }
         </div>
 
-        <!-- Right side: Barcode -->
+        <!-- Material Name - Large and Prominent -->
         <div style="
-          width: 35mm;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          border: 2px solid #000;
-          padding: 2mm;
-          background: white;
+          font-size: 18px;
+          font-weight: normal;
+          margin-bottom: 4mm;
+          margin-top: 4mm;
+          word-wrap: break-word;
+          line-height: 1.2;
+          color: #000;
+          min-height: 8mm;
         ">
-          <img src="${barcodeImage}" alt="Code128: ${barcodeData}" style="max-width: 100%; max-height: 12mm;" />
-          <span style="font-size: 8px; margin-top: 1mm; font-weight: bold; color: #000;">${barcodeData}</span>
+          ${materialName}
+        </div>
+
+        <!-- Location Information -->
+        <div style="
+          font-size: 10px;
+          font-weight: normal;
+          margin-bottom: 1mm;
+          color: #000;
+          line-height: 1.1;
+        ">
+          Lokalizacja: ${location}
+        </div>
+
+        <!-- Date Information -->
+        <div style="
+          font-size: 9px;
+          font-weight: normal;
+          margin-bottom: 4mm;
+          color: #000;
+          line-height: 1.1;
+        ">
+          Data: ${formattedDate}
+        </div>
+
+        <!-- Horizontal Line -->
+        <div style="
+          width: 94mm;
+          height: 2px;
+          background: #000;
+          margin: 2mm 0;
+        "></div>
+
+        <!-- Barcode Section - Full Width -->
+        <div style="
+          text-align: center;
+          background: white;
+          margin-top: 2mm;
+        ">
+          <img src="${barcodeImage}" alt="Code128: ${barcodeData}" style="
+            width: 94mm;
+            height: 18mm;
+            object-fit: contain;
+          " />
+          <div style="
+            font-size: 8px;
+            font-weight: bold;
+            color: #000;
+            margin-top: 1mm;
+            letter-spacing: 1px;
+          ">
+            ${barcodeData}
+          </div>
         </div>
       </div>
     `;

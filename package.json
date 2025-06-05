@@ -14,14 +14,13 @@
   },
   "dependencies": {
     "@zxing/library": "^0.21.3",
-    "clsx": "^2.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "jsbarcode": "^3.11.6",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "recharts": "^2.8.0"
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
